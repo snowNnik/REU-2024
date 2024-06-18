@@ -2,7 +2,7 @@ from user import User
 from zone import Zone
 
 def main():
-    # Testcases
+    # Base testcases
     user_attributes = {"color": "blue", "weight": 10}
     user = User(user_attributes)
     zone_attributes = {"color": "blue", "weight": 10}
@@ -14,7 +14,15 @@ def main():
 
     user.addAttributes({"height": 12})
     print("Mismatching attribute:", user.isAllowed(zone))
-    
+
+    height = 10
+    width =  10
+    matrix = [[None]*width]*height
+    for r in range(height):
+        for c in range(width):
+            matrix[r][c] = Zone(r, c)
+
+    print(matrix)
 
 if __name__ == "__main__":
     main()
