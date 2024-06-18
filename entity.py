@@ -1,12 +1,15 @@
 class Entity:
 
-    def __init__(self):
-        self.attributes = {}  
-        
-    def __init__(self, attributeList):
-        self.attributes = {}  
-        self.addAttribute(attributeList)
-            
+    #   creates empty attribute dictionary
+    #   Parameterized Constructor
+    #       creates empty attribute dictionary and uses the parameter attributeList
+    #       to update the List by calling addAttribute(attributeList)
+    def __init__(self, attributes={}):
+        self.attributes = attributes
+
+    #   addAttributes
+    #       updates the attribute dictionary using the attribute dictionary newAttributs
+    #       it was given
     def addAttributes(self, newAttributes):
         self.attributes.update(newAttributes)
 

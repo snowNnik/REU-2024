@@ -3,17 +3,15 @@ from entity import Entity
 
 class User(Entity):
     # Takes default constructor from Entity that instantiates atttribute dictionary
-    def __init__(self):
-        super()
-    
-    # Takes default constructor from Entity that instates attribute dictionary and populates from given list.
-    def __init__(self, attribute_list):
-        super(attribute_list)
+    def __init__(self, attribute_list={}):
+        super().__init__(attribute_list)
 
     # Takes a zone class, ensures the users attributes contain all the required attributes.
     def isAllowed(self, zone):
         zone_req = zone.attributes
         for key in zone_req.keys():
-            if self.attributes[key] != zone_req[key]:
+            if key not in self.attributes.keys():
+                return False
+            elif self.attributes[key] != zone_req[key]:
                 return False
         return True
