@@ -4,18 +4,11 @@ from entity import Entity
 class Zone(Entity):
     # Takes default constructor from Entity that instantiates atttribute dictionary
     # Must also store an x, y coordinate
-    def __init__(self, x, y):
-        super()
+    def __init__(self, x, y, attribute_list={}):
+        super().__init__(attribute_list)
         self.x = x
         self.y = y
     
-    # Takes default constructor from Entity that instates attribute dictionary and populates from given list.
-    # Must also store an x, y coordinate
-    def __init__(self, attribute_list, x, y):
-        super(attribute_list)
-        self.x = x
-        self.y = y
-
     # In order to return coordinate of zone
     def get_coordinates(self):
         return (self.x, self.y)

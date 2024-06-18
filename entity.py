@@ -1,12 +1,8 @@
 class Entity:
 
-    def __init__(self):
-        self.attributes = {}  
-        
-    def __init__(self, attributeList):
-        self.attributes = {}  
-        self.addAttribute(attributeList)
-            
+    def __init__(self, attributes={}):
+        self.attributes = attributes
+
     def addAttributes(self, newAttributes):
         self.attributes.update(newAttributes)
 
