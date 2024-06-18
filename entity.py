@@ -12,4 +12,8 @@ class Entity:
     #       it was given
     def addAttributes(self, newAttributes):
         self.attributes.update(newAttributes)
-
+    # Remove Attribute
+    #   The parameter keyToRemove is used to identify which entry in the dictionary
+    #   should be deleted by removing the key inside the attributes dictionary that matches the
+    def removeAttributes(self, keyToRemove):
+        del self.attributes[keyToRemove]
