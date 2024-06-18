@@ -1,6 +1,6 @@
+#Entity Class responsible for storing and creating attributes
 class Entity:
 
-    #   creates empty attribute dictionary
     #   Parameterized Constructor
     #       creates empty attribute dictionary and uses the parameter attributeList
     #       to update the List by calling addAttribute(attributeList)
