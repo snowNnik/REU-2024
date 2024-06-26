@@ -1,3 +1,5 @@
+# Updated attributeInstances, mostly complete with toString and equals to mess around with.
+
 class attributeInstance():
     def __init__(self, category, value):
         self.category = category
