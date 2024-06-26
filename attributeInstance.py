@@ -14,9 +14,6 @@ class attributeInstance():
     def setCategory(self, new_category):
         self.category = new_category
 
-    def getValue(self):
-        return self.value
-
     def setValue(self, new_value):
         self.value = new_value
 
