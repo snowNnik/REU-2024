@@ -1,33 +1,71 @@
-from user import User
-from zone import Zone
+import sys
+# from edu.asu.cdf.cse365.abac.elements import ABACPolicy, Entity, Permission
+# from edu.asu.cdf.cse365.abac.monitor import ABACMonitor
+# from edu.asu.cdf.cse365.abac.utils import ABACPolicyLoader
+from ABACPolicyLoader import *
+from ABACMonitor import *
+from ABACPolicy import *
+from Permission import *
 
-def main():
-    # Base testcases
-    # Testing if the user is allowed into a zone with exact matching attributes. Expect True.
-    user_attributes = {"color": "blue", "weight": 10}
-    user = User(user_attributes)
-    zone_attributes = {"color": "blue", "weight": 10}
-    zone = Zone(0, 0, zone_attributes)
-    print("If matching attributes:", user.isAllowed(zone), ". Expected True.")
 
-    # Testing if the user is allowed into a zone when the zone has one extra attribute. Expect False.
-    zone.addAttributes({"height": 11})
-    print("Missing attribute:", user.isAllowed(zone), ". Expected False.")
+def check_permission(user_id, object_id, environment_id, permission_id, policy):
+    if policy is not None:
+        user = policy.get_entity(user_id)
+        obj = policy.get_entity(object_id)
+        permission = policy.get_permission(permission_id)
+        environment = policy.get_entity(environment_id)
+        monitor = ABACMonitor(policy)  # creating instance
+        result = monitor.check_access(user, obj, environment, permission)
+        if result:
+            print("Permission GRANTED!")
+        else:
+            print("Permission DENIED!")
 
-    # Testing if the user is allowed into a zone when the attributes are there, but mismatching. Expect False.
-    user.addAttributes({"height": 12})
-    print("Mismatching attribute:", user.isAllowed(zone), ". Expected False.")
 
-    # Testing if the user is allowed into a zone when the user has more attributes. Expect True.
-    user.addAttributes({"height": 11, "glasses": "yes"})
-    print("User has an extra attribute:", user.isAllowed(zone), ". Expected True.")
+def execute_command(command):
+    global policy
+    command_parts = command.split(" ")
+    if len(command_parts) == 0:
+        return
+    match command_parts[0]:
+        case "load-policy":
+            policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
+        case "show-policy":
+            print(policy)
+        case "check-permission":
+            check_permission(
+                command_parts[1], command_parts[2], command_parts[3], command_parts[4], policy)
+        case "add-entity":
+            policy.add_entity(command_parts[1])
+        case "remove-entity":
+            policy.remove_entity(command_parts[1])
+        case "add-attribute":
+            policy.add_attribute_declaration(
+                command_parts[1], command_parts[2])
+        case "remove-attribute":
+            policy.remove_attribute_declaration(command_parts[1])
+        case "add-permission":
+            policy.add_permission(command_parts[1])
+        case "remove-permission":
+            policy.remove_permission(command_parts[1])
+        case "add-attributes-to-permission":
+            policy.add_permission_to_attribute(command_parts)
+        case "remove-attribute-from-permission":
+            policy.remove_attribute_from_permission(
+                command_parts[1], command_parts[2], command_parts[3])
+        case "add-attribute-to-entity":
+            policy.add_attribute_to_entity(
+                command_parts[1], command_parts[2], command_parts[3])
+        case "remove-attribute-from-entity":
+            policy.remove_attribute_from_entity(
+                command_parts[1], command_parts[2], command_parts[3])
+        case _:
+            print(f"Unrecognized command: {command_parts[0]}", file=sys.stderr)
 
-    height = 10
-    width =  10
-    matrix = [[None]*width]*height
-    for r in range(height):
-        for c in range(width):
-            matrix[r][c] = Zone(r, c)
 
 if __name__ == "__main__":
-    main()
+    command_line = " ".join(sys.argv)
+    commands = command_line.split(";")
+    policy = None
+    for command in commands:
+        execute_command(command.strip())
