@@ -1,0 +1,5 @@
+ATTRS = <int, location>; <String, noise_level>; <String, username>
+PERMS = <PE>
+PA = <location, 1>; <noise_level, "quiet"> : PE - <location, 1>; <username, "Bob"> : PE
+ENTITIES = <Drone1>;<Drone2>;<Grid1>;<Grid2>;<Grid3>;<ENV>
+AA = <Drone1> : <noise_level, "loud">; <Drone1> : <username, "Tom">; <Drone2> : <username, "Bob">; <Grid1> : <location, 1>

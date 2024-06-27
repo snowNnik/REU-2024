@@ -1,19 +1,26 @@
-#Entity Class responsible for storing and creating attributes
 class Entity:
+    def __init__(self, name, assigned_attributes=None):
+        self.name = name
+        self.assigned_attributes = assigned_attributes if assigned_attributes is not None else []
 
-    #   Parameterized Constructor
-    #       creates empty attribute dictionary and uses the parameter attributeList
-    #       to update the List by calling addAttribute(attributeList)
-    def __init__(self, attributes={}):
-        self.attributes = attributes
+    def get_name(self):
+        return self.name
 
-    #   addAttributes
-    #       updates the attribute dictionary using the attribute dictionary newAttributs
-    #       it was given
-    def addAttributes(self, newAttributes):
-        self.attributes.update(newAttributes)
-    # Remove Attribute
-    #   The parameter keyToRemove is used to identify which entry in the dictionary
-    #   should be deleted by removing the key inside the attributes dictionary that matches the
-    def removeAttributes(self, keyToRemove):
-        del self.attributes[keyToRemove]
+    def set_name(self, name):
+        self.name = name
+
+    def get_assigned_attributes(self):
+        return self.assigned_attributes
+
+    def set_assigned_attributes(self, assigned_attributes):
+        self.assigned_attributes = assigned_attributes
+
+    def add_assigned_attribute(self, attribute):
+        if attribute not in self.assigned_attributes:
+            self.assigned_attributes.append(attribute)
+
+    def remove_assigned_attribute(self, attribute):
+        self.assigned_attributes.remove(attribute)
+
+    def __str__(self):
+        return f"<{self.get_name()}>"

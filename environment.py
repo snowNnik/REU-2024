@@ -1,7 +1,6 @@
-from entity import Entity
-# The user is an Entity that can also be assigned attributes
+from Entity import *
 
-class User(Entity):
-    # Takes default constructor from Entity that instantiates atttribute dictionary
-    def __init__(self, attribute_list={}):
-        super().__init__(attribute_list)
+
+class Environment(Entity):
+    def __init__(self, name, assigned_attributes=None):
+        super().__init__(name, assigned_attributes)

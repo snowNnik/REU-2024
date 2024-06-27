@@ -8,7 +8,7 @@ class Permission:
     related_attributes = []
     #     def __init__(self, name: str, related_attributes: List['AttributeInstance'] = None):
 
-    def __init__(self, name: str, related_attributes):
+    def __init__(self, name: str, related_attributes=None):
         self.name = name
         self.related_attributes = related_attributes if related_attributes is not None else []
 

@@ -6,6 +6,7 @@ from AttributeInstance import *
 from PARelation import *
 from AARelation import *
 from ABACPolicy import *
+from ABACMonitor import *
 
 
 class ABACPolicyLoader:
@@ -141,3 +142,5 @@ class ABACPolicyLoader:
                         parts[1], entities, attribute_declarations, attribute_instances)
 
         return ABACPolicy(entities, permissions, attribute_declarations, attribute_instances, pa_relation, aa_relation)
+
+

@@ -1,11 +1,15 @@
 from typing import List
-
+from Permission import *
+from AttributeDeclaration import *
+from AttributeInstance import *
+from PARelation import *
+from AARelation import *
+from ABACPolicy import *
 
 class ABACMonitor:
     def __init__(self, policy: ABACPolicy):
         self.policy = policy
 
-    @staticmethod
     def check_access(self, user: Entity, obj: Entity, environment: Entity, permission: Permission) -> bool:
         attribute_bag = []
         user_attributes = self.policy.aa_relation.get_attributes(user)
@@ -19,7 +23,6 @@ class ABACMonitor:
             attribute_bag.extend(env_attributes)
         return self.check_access_with_attribute_bag(attribute_bag, permission)
 
-    @staticmethod
     def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission) -> bool:
         for entry in self.policy.pa_relation.get_entries(permission):
             if all(attr in attribute_bag for attr in entry.attributes):
