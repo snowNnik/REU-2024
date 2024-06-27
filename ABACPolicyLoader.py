@@ -143,4 +143,23 @@ class ABACPolicyLoader:
 
         return ABACPolicy(entities, permissions, attribute_declarations, attribute_instances, pa_relation, aa_relation)
 
+reader = ABACPolicyLoader()
+policy = reader.load_abac_policy('test.txt')
+monitor = ABACMonitor(policy)
+entities = policy.get_entities()
+instances = policy.get_attribute_instances()
+permissions = policy.get_permissions()
+# user, object, environment, permission
+# print(monitor.check_access(entities[0], entities[-1], entities[3], permissions[0]))
+print(monitor.check_access(entities[0], entities[3], entities[-1], permissions[0]))
+print(monitor.check_access(entities[1], entities[2], entities[-1], permissions[0]))
+
+entities = [str(x) for x in entities]
+print(entities)
+
+instances = [str(x) for x in instances]
+print(instances)
+
+permissions = [str(x) for x in permissions]
+print(permissions) 
 
