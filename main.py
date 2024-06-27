@@ -65,7 +65,10 @@ def execute_command(command):
 
 if __name__ == "__main__":
     command_line = " ".join(sys.argv)
-    commands = command_line.split(";")
+    command_line = command_line[8:]
+    commandFile = open(command_line, "r")
+    commands = commandFile.read().split(";")
     policy = None
+    print(commands)
     for command in commands:
         execute_command(command.strip())
