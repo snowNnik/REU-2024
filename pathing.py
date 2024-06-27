@@ -56,8 +56,7 @@ def a_star_search(grid, src, dest):
     # Check if a cell is valid (within the grid)
     def is_valid(row, col):
         return (row >= 0) and (row < r) and (col >= 0) and (col < c)
-    r = len(grid)
-    c = len(grid[0])
+
 	# Check if the source and destination are valid
     if not is_valid(src[0], src[1]) or not is_valid(dest[0], dest[1]):
         print("Source or destination is invalid")
