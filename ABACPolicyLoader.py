@@ -123,7 +123,7 @@ class ABACPolicyLoader:
         permissions = None
         pa_relation = None
         aa_relation = None
-
+        filename = "../REU-2024/inputs/" + str(filename)
         with open(filename, "r") as file:
             for line in file:
                 parts = line.split("=")

@@ -66,9 +66,9 @@ def execute_command(command):
 if __name__ == "__main__":
     command_line = " ".join(sys.argv)
     command_line = command_line[8:]
+    command_line = "../REU-2024/inputs/" + str(command_line)
     commandFile = open(command_line, "r")
     commands = commandFile.read().split(";")
     policy = None
-    print(commands)
     for command in commands:
         execute_command(command.strip())

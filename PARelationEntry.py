@@ -12,6 +12,6 @@ class PARelationEntry:
             builder.append(str(attribute))
             builder.append(", ")
         builder.append(": ")
-        builder.append(str(self.permission))
-        builder.append(";")
+        builder.append(str(self.permission.get_name()))
+        builder.append("")
         return "".join(builder)

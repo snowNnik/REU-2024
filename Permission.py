@@ -38,3 +38,4 @@ class Permission:
 # Written as override in Java
     def __str__(self) -> str:
         return f"<{self.name}>"
+
