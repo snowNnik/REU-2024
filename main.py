@@ -10,6 +10,7 @@ from Permission import *
 
 def check_permission(user_id, object_id, environment_id, permission_id, policy):
     if policy is not None:
+        print(environment_id)
         user = policy.get_entity(user_id)
         obj = policy.get_entity(object_id)
         permission = policy.get_permission(permission_id)
@@ -18,10 +19,20 @@ def check_permission(user_id, object_id, environment_id, permission_id, policy):
         result = monitor.check_access(user, obj, environment, permission)
         if result:
             print("Permission GRANTED!")
+            return 1
         else:
             print("Permission DENIED!")
-
-
+            return 0
+def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
+    if policy is not None:
+        global grid 
+        grid = []
+        for row in range(int(rows)):
+            grid.append([])
+            for col in range(int(columns)):
+                object_id = "Grid" + str(row) + "x" + str(col)
+                grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy))
+  
 def execute_command(command):
     global policy
     command_parts = command.split(" ")
@@ -29,7 +40,10 @@ def execute_command(command):
         return
     match command_parts[0]:
         case "load-policy":
+            print(command_parts[1])
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
+        case "build-grid":
+            build_grid(command_parts[1], command_parts[2],command_parts[3],command_parts[4],command_parts[5], policy)
         case "show-policy":
             print(policy)
         case "check-permission":
@@ -72,3 +86,5 @@ if __name__ == "__main__":
     policy = None
     for command in commands:
         execute_command(command.strip())
+    print(grid)
+    
