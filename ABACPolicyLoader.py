@@ -24,20 +24,24 @@ class ABACPolicyLoader:
     def read_attribute_declarations(attrs_line: str) -> List[AttributeDeclaration]:
         result = []
         attrs = attrs_line.split(";")
+        #print("Attribute Declaration")
         for attr in attrs:
             attr = attr.strip()[1:-1]
             parts = attr.split(",")
             declaration = AttributeDeclaration(
                 parts[1].strip(), parts[0].strip())
             result.append(declaration)
+            #print("     " + str(declaration))
         return result
 
     @staticmethod
     def read_entities(entities_line: str) -> List[Entity]:
         result = []
         entities = entities_line.split(";")
+        #print("Entity Declaration")
         for entity in entities:
             entity = entity.strip()[1:-1]
+            #print("     " + entity)
             new_entity = Entity(entity)
             result.append(new_entity)
         return result
@@ -54,12 +58,12 @@ class ABACPolicyLoader:
         result = []
         attributes = attributes_line.split(";")
         for attribute in attributes:
+            # print("     " + attribute)
             attribute = attribute.strip()[1:-1]
             parts = attribute.split(",")
             name = parts[0].strip()
             value = parts[1].strip()
-            declaration = ABACPolicyLoader.get_declaration(
-                name, declarations_list)
+            declaration = ABACPolicyLoader.get_declaration(name, declarations_list)
             result.append(AttributeInstance(declaration, value))
         return result
 
@@ -81,14 +85,13 @@ class ABACPolicyLoader:
     def read_pa(pa_line: str, permissions: List[Permission], attribute_declarations_list: List[AttributeDeclaration], instances: List[AttributeInstance]) -> PARelation:
         result = PARelation()
         entries = pa_line.split("-")
+        # print("Permission Attributes")
         for entry in entries:
             parts = entry.split(":")
             attributes = parts[0].strip()
             permission_name = parts[1].strip()
-            instances = ABACPolicyLoader.read_attribute_instances(
-                attributes, attribute_declarations_list)
-            permission = ABACPolicyLoader.get_permission(
-                permission_name, permissions)
+            instances = ABACPolicyLoader.read_attribute_instances(attributes, attribute_declarations_list)
+            permission = ABACPolicyLoader.get_permission(permission_name, permissions)
             result.add_relation_entry(permission, instances)
         return result
 
@@ -102,11 +105,12 @@ class ABACPolicyLoader:
     @staticmethod
     def read_aa(aa_line: str, entities: List[Entity], attribute_declarations_list: List[AttributeDeclaration], instances: List[AttributeInstance]) -> AARelation:
         result = AARelation()
-        entries = aa_line.split(";")
+        # print("Entity Attributes ")
+        entries = aa_line.split("-")
         for entry in entries:
             parts = entry.split(":")
-            entity_name = parts[0].strip()[1:-1]
-            attributes = parts[1].strip()
+            entity_name = parts[1].strip()[1:-1]
+            attributes = parts[0].strip()
             user_attributes = ABACPolicyLoader.read_attribute_instances(
                 attributes, attribute_declarations_list)
             instances = ABACPolicyLoader.mix_attribute_instance_lists(
@@ -140,5 +144,4 @@ class ABACPolicyLoader:
                 elif parts[0].strip() == "AA":
                     aa_relation = ABACPolicyLoader.read_aa(
                         parts[1], entities, attribute_declarations, attribute_instances)
-
         return ABACPolicy(entities, permissions, attribute_declarations, attribute_instances, pa_relation, aa_relation)

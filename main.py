@@ -10,7 +10,6 @@ from Permission import *
 
 def check_permission(user_id, object_id, environment_id, permission_id, policy):
     if policy is not None:
-        print(environment_id)
         user = policy.get_entity(user_id)
         obj = policy.get_entity(object_id)
         permission = policy.get_permission(permission_id)
@@ -18,10 +17,10 @@ def check_permission(user_id, object_id, environment_id, permission_id, policy):
         monitor = ABACMonitor(policy)  # creating instance
         result = monitor.check_access(user, obj, environment, permission)
         if result:
-            print("Permission GRANTED!")
+            #print("Permission GRANTED!")
             return 1
         else:
-            print("Permission DENIED!")
+            #print("Permission DENIED!")
             return 0
 def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
     if policy is not None:

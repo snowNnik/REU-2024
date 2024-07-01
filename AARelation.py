@@ -44,6 +44,7 @@ class AARelation:
         self.relation_table = {}
 
     def add_relation_entry(self, entity, attributes):
+  
         if entity.name in self.relation_table:
             self.relation_table[entity.name].attributes.extend(attributes)
         else:

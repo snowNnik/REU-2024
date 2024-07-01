@@ -17,14 +17,23 @@ class ABACMonitor:
             attribute_bag.extend(user_attributes)
         object_attributes = self.policy.aa_relation.get_attributes(obj)
         if object_attributes is not None:
+    
             attribute_bag.extend(object_attributes)
         env_attributes = self.policy.aa_relation.get_attributes(environment)
         if env_attributes is not None:
             attribute_bag.extend(env_attributes)
+        
+       
         return self.check_access_with_attribute_bag(attribute_bag, permission)
 
     def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission) -> bool:
+        '''print("Current Attributes")
+        for x in attribute_bag:
+            if x.get_declaration is not None:
+                print("     " + str(x))'''
         for entry in self.policy.pa_relation.get_entries(permission):
+            '''print("Attribute Check")
+            print("     " + str(entry))'''
             if all(attr in attribute_bag for attr in entry.attributes):
                 return True
         return False
