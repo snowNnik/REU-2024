@@ -1,0 +1,5 @@
+ATTRS = <String, userName>; <String, noise_level>; <String, speed>
+PERMS = <Entry>
+PA = <userName, Grid0x0>; <noise_level, quiet> : Entry - <userName, Grid0x1>; <speed, "fast"> : Entry
+ENTITIES = <Drone>;<Grid0x0>;<Grid0x1>;<Grid1x0>;<Grid1x1>;<ENV>
+AA = <userName, Grid0x0> : <Grid0x0> - <noise_level, quiet>; <speed, fast> : <Drone> - <userName, Grid0x1> : <Grid0x1>

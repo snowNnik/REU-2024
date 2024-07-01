@@ -2,4 +2,4 @@ ATTRS = <int, location>; <String, noise_level>
 PERMS = <Entry>
 PA = <location, 1>; <noise_level, "quiet"> : Entry
 ENTITIES = <Drone>;<Grid0x0>;<ENV>
-AA = <Grid0x0> : <location, 1>; <Drone> : <noise_level, "quiet">
+AA = <Grid0x0> : <location, 1>; <Drone> : <noise_level, "q">

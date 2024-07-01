@@ -1,1 +1,1 @@
-load-policy Example-Drone-Sim1x1.txt; build-grid Drone ENV Entry 1 1
+load-policy Example-Drone-Sim2x2.txt; build-grid Drone ENV Entry 2 2
