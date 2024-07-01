@@ -1,1 +1,0 @@
-load-policy Example-Drone-Sim2x2.txt; build-grid Drone ENV Entry 2 2
