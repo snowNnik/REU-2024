@@ -17,7 +17,6 @@ class ABACMonitor:
             attribute_bag.extend(user_attributes)
         object_attributes = self.policy.aa_relation.get_attributes(obj)
         if object_attributes is not None:
-    
             attribute_bag.extend(object_attributes)
         env_attributes = self.policy.aa_relation.get_attributes(environment)
         if env_attributes is not None:

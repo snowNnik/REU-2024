@@ -30,6 +30,7 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
             grid.append([])
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
+                print(col)
                 grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy))
   
 def execute_command(command):
@@ -39,7 +40,7 @@ def execute_command(command):
         return
     match command_parts[0]:
         case "load-policy":
-            print(command_parts[1])
+            #print(command_parts[1])
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
         case "build-grid":
             rowsAndColums = command_parts[4].strip()[1:-1]

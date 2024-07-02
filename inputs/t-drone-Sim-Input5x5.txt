@@ -1,0 +1,1 @@
+load-policy Example-Drone-Sim2x2.txt; build-grid Drone ENV Entry <5,5>; make-path <0,0> <4,4>
