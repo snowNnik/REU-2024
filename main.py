@@ -7,6 +7,7 @@ from ABACMonitor import *
 from ABACPolicy import *
 from Permission import *
 from pathing import *
+from graph import *
 
 def check_permission(user_id, object_id, environment_id, permission_id, policy):
     if policy is not None:
@@ -35,6 +36,7 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
   
 def execute_command(command):
     global policy
+    global path
     command_parts = command.split(" ")
     if len(command_parts) == 0:
         return
@@ -53,7 +55,7 @@ def execute_command(command):
             startPos = [eval(x) for x in startPos]
             destPos = command_parts[2].strip()[1:-1].split(",")
             destPos = [eval(x) for x in destPos]
-            a_star_search(grid, startPos,destPos)
+            path = a_star_search(grid, startPos,destPos)
             
         case "show-policy":
             print(policy)
@@ -97,5 +99,7 @@ if __name__ == "__main__":
     policy = None
     for command in commands:
         execute_command(command.strip())
-    print(grid)
+    for line in grid:
+        print(line)
+    showGrid(grid, path)
     

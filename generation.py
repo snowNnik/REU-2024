@@ -32,11 +32,11 @@ def generatePAs(row, col, attrs):
     pA = "PA = "
     names = generateGridNames(row, col)
     for name in names:
-        curr_attrs = random.sample(attrs, k=2)
+        curr_attrs = random.sample(attrs, k=1)
         pA += "<userName, " + str(name[1:-1]) + ">;"
-        for attr in curr_attrs:
-            random_num = random.randint(0, 1)
-            pA += "<" + str(attr) + ", " + str(random_num) + ">;"
+        # for attr in curr_attrs:
+        #     random_num = random.randint(0, 1)
+        #     pA += "<" + str(attr) + ", " + str(random_num) + ">;"
         pA = pA[:-1] + " : Entry - "
     pA = pA[:-2]
     return pA
@@ -46,7 +46,7 @@ def generateAAs(row, col, attrs):
     aA = "AA = " 
     for attr in attrs:
         aA += "<" + str(attr) + ", " + str(0) + ">;"
-    aA += aA[:-1] + " : <Drone> - "
+    aA = aA[:-1] + " : <Drone> - "
     names = generateGridNames(row, col)
     for name in names:
         aA += "<userName, " + str(name[1:-1])  + "> : " + name + " - "
@@ -61,8 +61,8 @@ def generateEntities(row, col):
     return line + "<ENV>"
 
 attrs = random.sample(possible_attrs, k=5)
-row = 5
-col = 5
+row = 7
+col = 10
 
 f = open("outfile.txt", "w")
 f.write(generateAttributes(attrs) + "\n")

@@ -110,6 +110,7 @@ class ABACPolicyLoader:
         entries = aa_line.split("-")
         for entry in entries:
             parts = entry.split(":")
+            print(parts)
             entity_name = parts[1].strip()[1:-1]
             print("Entity Attributes " + entity_name)
             attributes = parts[0].strip()

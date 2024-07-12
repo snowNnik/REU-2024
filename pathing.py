@@ -42,11 +42,12 @@ def trace_path(cell_details, dest):
 	path.append((row, col))
 	# Reverse the path to get the path from source to destination
 	path.reverse()
-
+    
 	# Print the path
 	for i in path:
 		print("->", i, end=" ")
-	print()
+            
+	return path
 
 # Implement the A* search algorithm
 def a_star_search(grid, src, dest):
@@ -104,7 +105,9 @@ def a_star_search(grid, src, dest):
         closed_list[i][j] = True
 
         # For each direction, check the successors
-        directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+        #diagonal vs non-diagonal
+        #directions = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
         for dir in directions:
             new_i = i + dir[0]
             new_j = j + dir[1]
@@ -118,9 +121,9 @@ def a_star_search(grid, src, dest):
                     cell_details[new_i][new_j].parent_j = j
                     print("The destination cell is found")
                     # Trace and print the path from source to destination
-                    trace_path(cell_details, dest)
+                    path = trace_path(cell_details, dest)
                     found_dest = True
-                    return
+                    return path
                 else:
                     # Calculate the new f, g, and h values
                     g_new = cell_details[i][j].g + 1.0
