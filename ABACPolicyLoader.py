@@ -26,7 +26,6 @@ class ABACPolicyLoader:
         attrs = attrs_line.split(";")
         print("Attribute Declaration")
         for attr in attrs:
-            print(attr)
             attr = attr.strip()[1:-1]
             parts = attr.split(",")
             declaration = AttributeDeclaration(
@@ -58,7 +57,6 @@ class ABACPolicyLoader:
     def read_attribute_instances(attributes_line: str, declarations_list: List[AttributeDeclaration]) -> List[AttributeInstance]:
         result = []
         attributes = attributes_line.split(";")
-        print(attributes)
         for attribute in attributes:
             print("     " + attribute)
             attribute = attribute.strip()[1:-1]
@@ -110,7 +108,6 @@ class ABACPolicyLoader:
         entries = aa_line.split("-")
         for entry in entries:
             parts = entry.split(":")
-            print(parts)
             entity_name = parts[1].strip()[1:-1]
             print("Entity Attributes " + entity_name)
             attributes = parts[0].strip()
