@@ -13,7 +13,9 @@ class Cell:
 
 # Check if a cell is unblocked
 def is_unblocked(grid, row, col):
-	return grid[row][col] == 1
+    print(row, col)
+    print(grid[row])
+    return grid[row][col] == 1
 
 # Check if a cell is the destination
 def is_destination(row, col, dest):

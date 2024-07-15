@@ -32,6 +32,10 @@ def build_grid(user_id, environment_id, rows, columns, policy):
             grid.append([])
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
+                nonEntry = check_permission(user_id, object_id, environment_id, 'nonEntry', policy)
+                if nonEntry:
+                    grid[row].append(0)
+                    continue
                 grid[row].append(check_permission(user_id, object_id, environment_id, 'Entry', policy))
   
 def execute_command(command):
@@ -45,7 +49,7 @@ def execute_command(command):
             #print(command_parts[1])
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
         case "build-grid":
-            rowsAndColums = command_parts[4].strip()[1:-1]
+            rowsAndColums = command_parts[3].strip()[1:-1]
             rowsAndColums = rowsAndColums.split(",")
             row = int(rowsAndColums[0])
             colmun = int(rowsAndColums[1])
