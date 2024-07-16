@@ -31,7 +31,6 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
             grid.append([])
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
-                print(col)
                 grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy))
   
 def execute_command(command):
@@ -99,6 +98,7 @@ if __name__ == "__main__":
     policy = None
     for command in commands:
         execute_command(command.strip())
+    print(' ')
     for line in grid:
         print(line)
     showGrid(grid, path)

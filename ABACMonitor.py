@@ -33,7 +33,7 @@ class ABACMonitor:
         for entry in self.policy.pa_relation.get_entries(permission):
             '''print("Attribute Check")
             print("     " + str(entry))'''
-            if all(attr in attribute_bag for attr in entry.attributes):
+            if all(attr in attribute_bag for attr in entry):
                 return True
         return False
 
