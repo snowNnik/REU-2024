@@ -32,11 +32,7 @@ def build_grid(user_id, environment_id, rows, columns, policy):
             grid.append([])
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
-                nonEntry = check_permission(user_id, object_id, environment_id, 'nonEntry', policy)
-                if nonEntry:
-                    grid[row].append(0)
-                    continue
-                grid[row].append(check_permission(user_id, object_id, environment_id, 'Entry', policy))
+                grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy))
   
 def execute_command(command):
     global policy
@@ -103,6 +99,7 @@ if __name__ == "__main__":
     policy = None
     for command in commands:
         execute_command(command.strip())
+    print(' ')
     for line in grid:
         print(line)
     print(path)

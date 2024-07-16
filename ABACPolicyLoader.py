@@ -24,25 +24,25 @@ class ABACPolicyLoader:
     def read_attribute_declarations(attrs_line: str) -> List[AttributeDeclaration]:
         result = []
         attrs = attrs_line.split(";")
-        print("Attribute Declaration")
+        # print("Attribute Declaration")
         for attr in attrs:
+            # print(attr)
             attr = attr.strip()[1:-1]
             parts = attr.split(",")
             declaration = AttributeDeclaration(
                 parts[1].strip(), parts[0].strip())
             result.append(declaration)
             print("     " + str(declaration))
-        
         return result
 
     @staticmethod
     def read_entities(entities_line: str) -> List[Entity]:
         result = []
         entities = entities_line.split(";")
-        print("Entity Declaration")
+        # print("Entity Declaration")
         for entity in entities:
             entity = entity.strip()[1:-1]
-            print("     " + entity)
+            # print("     " + entity)
             new_entity = Entity(entity)
             result.append(new_entity)
         return result
@@ -61,7 +61,7 @@ class ABACPolicyLoader:
         result = []
         attributes = attributes_line.split(";")
         for attribute in attributes:
-            print("     " + attribute)
+            # print("     " + attribute)
             attribute = attribute.strip()[1:-1]
             parts = attribute.split(",")
             name = parts[0].strip()
@@ -89,7 +89,7 @@ class ABACPolicyLoader:
     def read_pa(pa_line: str, permissions: List[Permission], attribute_declarations_list: List[AttributeDeclaration], instances: List[AttributeInstance]) -> PARelation:
         result = PARelation()
         entries = pa_line.split("-")
-        print("Permission Attributes")
+        # print("Permission Attributes")
         for entry in entries:
             parts = entry.split(":")
             attributes = parts[0].strip()
@@ -113,7 +113,7 @@ class ABACPolicyLoader:
         for entry in entries:
             parts = entry.split(":")
             entity_name = parts[1].strip()[1:-1]
-            print("Entity Attributes " + entity_name)
+            # print("Entity Attributes " + entity_name)
             attributes = parts[0].strip()
             user_attributes = ABACPolicyLoader.read_attribute_instances(
                 attributes, attribute_declarations_list)
