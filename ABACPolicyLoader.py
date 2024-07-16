@@ -98,7 +98,6 @@ class ABACPolicyLoader:
             instances = ABACPolicyLoader.read_attribute_instances(attributes, attribute_declarations_list)
             permission = ABACPolicyLoader.get_permission(permission_name, permissions)
             result.add_relation_entry(permission, instances)
-            print(str(entry))
         return result
 
     @staticmethod
