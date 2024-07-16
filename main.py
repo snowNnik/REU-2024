@@ -23,8 +23,7 @@ def check_permission(user_id, object_id, environment_id, permission_id, policy):
         else:
             #print("Permission DENIED!")
             return 0
-        
-def build_grid(user_id, environment_id, rows, columns, policy):
+def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
     if policy is not None:
         global grid 
         grid = []
@@ -45,11 +44,11 @@ def execute_command(command):
             #print(command_parts[1])
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
         case "build-grid":
-            rowsAndColums = command_parts[3].strip()[1:-1]
+            rowsAndColums = command_parts[4].strip()[1:-1]
             rowsAndColums = rowsAndColums.split(",")
             row = int(rowsAndColums[0])
             colmun = int(rowsAndColums[1])
-            build_grid(command_parts[1], command_parts[2], rowsAndColums[0],rowsAndColums[1], policy)
+            build_grid(command_parts[1], command_parts[2],command_parts[3],rowsAndColums[0],rowsAndColums[1], policy)
         case "make-path":
             startPos = command_parts[1].strip()[1:-1].split(",")
             startPos = [eval(x) for x in startPos]
@@ -102,6 +101,5 @@ if __name__ == "__main__":
     print(' ')
     for line in grid:
         print(line)
-    print(path)
     showGrid(grid, path)
     
