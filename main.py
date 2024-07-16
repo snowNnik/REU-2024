@@ -9,14 +9,14 @@ from Permission import *
 from pathing import *
 from graph import *
 
-def check_permission(user_id, object_id, environment_id, permission_id, policy):
+def check_permission(user_id, object_id, environment_id, permission_id, policy, row, col):
     if policy is not None:
         user = policy.get_entity(user_id)
         obj = policy.get_entity(object_id)
         permission = policy.get_permission(permission_id)
         environment = policy.get_entity(environment_id)
         monitor = ABACMonitor(policy)  # creating instance
-        result = monitor.check_access(user, obj, environment, permission)
+        result = monitor.check_access(user, obj, environment, permission, row,col)
         if result:
             #print("Permission GRANTED!")
             return 1
@@ -31,7 +31,7 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
             grid.append([])
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
-                grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy))
+                grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy,row,col))
   
 def execute_command(command):
     global policy

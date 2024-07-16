@@ -6,15 +6,15 @@ class PARelation:
 
     def add_relation_entry(self, permission, instances):
         entries = self.relation_table
-        if(not(str(instances[0].get_value) in entries.keys())):
-            entries[str(instances[0].get_value)] = {}
-        print(permission)
-        if(not(permission in entries[str(instances[0].get_value)].keys())):
-            entries[str(instances[0].get_value)][permission] = []
-        entries[str(instances[0].get_value)][permission].append(instances)
+        print(instances[0].get_value())
+        if(not(str(instances[0].get_value()) in entries.keys())):
+            entries[str(instances[0].get_value())] = {}
+        if(not(permission in entries[str(instances[0].get_value())].keys())):
+            entries[str(instances[0].get_value())][permission] = []
+        entries[str(instances[0].get_value())][permission].append(instances)
 
-    def get_entries(self, permission):
-        return self.relation_table.get(permission.get_name())
+    def get_entries(self, permission,row,col):
+        return self.relation_table["Grid"+str(row)+"x"+str(col)][permission]
     # unsure if correct, not completely sure what the purpose of this function is.
     def are_related(self, permission, attributes):
         entries = self.relation_table.get(permission.get_name())
