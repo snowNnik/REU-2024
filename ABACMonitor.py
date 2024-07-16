@@ -10,7 +10,7 @@ class ABACMonitor:
     def __init__(self, policy: ABACPolicy):
         self.policy = policy
 
-    def check_access(self, user: Entity, obj: Entity, environment: Entity, permission: Permission) -> bool:
+    def check_access(self, user: Entity, obj: Entity, environment: Entity, permission: Permission,row,col) -> bool:
         attribute_bag = []
         user_attributes = self.policy.aa_relation.get_attributes(user)
         if user_attributes is not None:
@@ -21,14 +21,14 @@ class ABACMonitor:
         env_attributes = self.policy.aa_relation.get_attributes(environment)
         if env_attributes is not None:
             attribute_bag.extend(env_attributes)
-        return self.check_access_with_attribute_bag(attribute_bag, permission)
+        return self.check_access_with_attribute_bag(attribute_bag, permission, row, col)
 
-    def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission) -> bool:
+    def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission, row, col) -> bool:
         '''print("Current Attributes")
         for x in attribute_bag:
             if x.get_declaration is not None:
                 print("     " + str(x))'''
-        for entry in self.policy.pa_relation.get_entries(permission):
+        for entry in self.policy.pa_relation.get_entries(permission, row, col):
             '''print("Attribute Check")
             print("     " + str(entry))'''
             if all(attr in attribute_bag for attr in entry):

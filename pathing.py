@@ -13,8 +13,8 @@ class Cell:
 
 # Check if a cell is unblocked
 def is_unblocked(grid, row, col):
-    print(row, col)
-    print(grid[row])
+    #print(row, col)
+    #print(grid[row])
     return grid[row][col] == 1
 
 # Check if a cell is the destination
@@ -27,29 +27,25 @@ def calculate_h_value(row, col, dest):
 
 # Trace the path from source to destination
 def trace_path(cell_details, dest):
-	# print("The Path is ")
-	path = []
-	row = dest[0]
-	col = dest[1]
+	#print("The Path is ")
+    path = []
+    row = dest[0]
+    col = dest[1]
 
 	# Trace the path from destination to source using parent cells
-	while not (cell_details[row][col].parent_i == row and cell_details[row][col].parent_j == col):
-		path.append((row, col))
-		temp_row = cell_details[row][col].parent_i
-		temp_col = cell_details[row][col].parent_j
-		row = temp_row
-		col = temp_col
-
-	# Add the source cell to the path
-	path.append((row, col))
-	# Reverse the path to get the path from source to destination
-	path.reverse()
-    
-	# Print the path
-	# for i in path:
-	# 	print("->", i, end=" ")
-            
-	return path
+    while not (cell_details[row][col].parent_i == row and cell_details[row][col].parent_j == col):
+        path.append((row, col))
+        temp_row = cell_details[row][col].parent_i
+        temp_col = cell_details[row][col].parent_j
+        row = temp_row
+        col = temp_col
+    # Add the source cell to the path
+    path.append((row, col))
+    # Reverse the path to get the path from source to destination
+    path.reverse()
+    for i in path:
+        print("->", i, end=" ")
+    return path
 
 # Implement the A* search algorithm
 def a_star_search(grid, src, dest):

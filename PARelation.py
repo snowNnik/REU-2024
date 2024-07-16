@@ -5,11 +5,13 @@ class PARelation:
         self.relation_table = {}
 
     def add_relation_entry(self, permission, instances):
-        entries = self.relation_table.get(permission.get_name())
-        if entries is None:
-            entries = []
-            self.relation_table[permission.get_name()] = entries
-        entries.append(instances)
+        entries = self.relation_table
+        if(not(str(instances[0].get_value) in entries.keys())):
+            entries[str(instances[0].get_value)] = {}
+        print(permission)
+        if(not(permission in entries[str(instances[0].get_value)].keys())):
+            entries[str(instances[0].get_value)][permission] = []
+        entries[str(instances[0].get_value)][permission].append(instances)
 
     def get_entries(self, permission):
         return self.relation_table.get(permission.get_name())
@@ -64,6 +66,6 @@ class PARelation:
             if len(entries) == 0:
                 del self.relation_table[key]
 
-    #TODO
+
     def remove_relation_entries(self, permission):
         del self.relation_table[permission.get_name()]

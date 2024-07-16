@@ -32,7 +32,7 @@ class ABACPolicyLoader:
             declaration = AttributeDeclaration(
                 parts[1].strip(), parts[0].strip())
             result.append(declaration)
-            print("     " + str(declaration))
+            # print("     " + str(declaration))
         return result
 
     @staticmethod
@@ -60,6 +60,7 @@ class ABACPolicyLoader:
             return e.get_declaration().get_name() == "userName"
         result = []
         attributes = attributes_line.split(";")
+        # print(attributes)
         for attribute in attributes:
             # print("     " + attribute)
             attribute = attribute.strip()[1:-1]
@@ -68,7 +69,7 @@ class ABACPolicyLoader:
             value = parts[1].strip()
             declaration = ABACPolicyLoader.get_declaration(name, declarations_list)
             result.append(AttributeInstance(declaration, value))
-        result.sort(key=mySort, reverse=False)
+            result.sort(key=mySort, reverse=True)
         return result
 
     @staticmethod
@@ -87,7 +88,7 @@ class ABACPolicyLoader:
 
     @staticmethod
     def read_pa(pa_line: str, permissions: List[Permission], attribute_declarations_list: List[AttributeDeclaration], instances: List[AttributeInstance]) -> PARelation:
-        result = PARelation()
+        result = PARelation() #Dictionary in Place of PARelation
         entries = pa_line.split("-")
         # print("Permission Attributes")
         for entry in entries:
@@ -97,6 +98,7 @@ class ABACPolicyLoader:
             instances = ABACPolicyLoader.read_attribute_instances(attributes, attribute_declarations_list)
             permission = ABACPolicyLoader.get_permission(permission_name, permissions)
             result.add_relation_entry(permission, instances)
+            print(str(entry))
         return result
 
     @staticmethod
