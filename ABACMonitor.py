@@ -21,8 +21,6 @@ class ABACMonitor:
         env_attributes = self.policy.aa_relation.get_attributes(environment)
         if env_attributes is not None:
             attribute_bag.extend(env_attributes)
-        
-       
         return self.check_access_with_attribute_bag(attribute_bag, permission)
 
     def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission) -> bool:

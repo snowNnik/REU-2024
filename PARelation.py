@@ -15,7 +15,10 @@ class PARelation:
         entries.append(PARelationEntry(permission, instances))
 
     def get_entries(self, permission):
-        return self.relation_table.get(permission.get_name())
+        if permission.get_name() in self.relation_table.keys():
+            return self.relation_table.get(permission.get_name())
+        else:
+            return []
 
     def are_related(self, permission, attributes):
         entries = self.relation_table.get(permission.get_name())

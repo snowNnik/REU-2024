@@ -13,7 +13,9 @@ class Cell:
 
 # Check if a cell is unblocked
 def is_unblocked(grid, row, col):
-	return grid[row][col] == 1
+    print(row, col)
+    print(grid[row])
+    return grid[row][col] == 1
 
 # Check if a cell is the destination
 def is_destination(row, col, dest):
@@ -25,7 +27,7 @@ def calculate_h_value(row, col, dest):
 
 # Trace the path from source to destination
 def trace_path(cell_details, dest):
-	print("The Path is ")
+	# print("The Path is ")
 	path = []
 	row = dest[0]
 	col = dest[1]
@@ -44,8 +46,8 @@ def trace_path(cell_details, dest):
 	path.reverse()
     
 	# Print the path
-	for i in path:
-		print("->", i, end=" ")
+	# for i in path:
+	# 	print("->", i, end=" ")
             
 	return path
 
@@ -119,7 +121,7 @@ def a_star_search(grid, src, dest):
                     # Set the parent of the destination cell
                     cell_details[new_i][new_j].parent_i = i
                     cell_details[new_i][new_j].parent_j = j
-                    print("The destination cell is found")
+                    # print("The destination cell is found")
                     # Trace and print the path from source to destination
                     path = trace_path(cell_details, dest)
                     found_dest = True

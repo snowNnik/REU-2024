@@ -1,0 +1,1 @@
+load-policy Example1copy.txt; build-grid Drone ENV <10,10>; make-path <4,0> <4,9>
