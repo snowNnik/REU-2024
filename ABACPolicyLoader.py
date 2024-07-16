@@ -32,6 +32,7 @@ class ABACPolicyLoader:
                 parts[1].strip(), parts[0].strip())
             result.append(declaration)
             print("     " + str(declaration))
+        
         return result
 
     @staticmethod
@@ -55,6 +56,8 @@ class ABACPolicyLoader:
 
     @staticmethod
     def read_attribute_instances(attributes_line: str, declarations_list: List[AttributeDeclaration]) -> List[AttributeInstance]:
+        def mySort(e):
+            return e.get_declaration().get_name() == "userName"
         result = []
         attributes = attributes_line.split(";")
         for attribute in attributes:
@@ -65,6 +68,7 @@ class ABACPolicyLoader:
             value = parts[1].strip()
             declaration = ABACPolicyLoader.get_declaration(name, declarations_list)
             result.append(AttributeInstance(declaration, value))
+        result.sort(key=mySort, reverse=False)
         return result
 
     @staticmethod
