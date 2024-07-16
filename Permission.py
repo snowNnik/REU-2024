@@ -2,7 +2,6 @@ from typing import List
 
 #  ALL GOOD WITH THIS FILE
 
-
 class Permission:
     name = ''
     related_attributes = []
