@@ -65,7 +65,6 @@ class ABACPolicyLoader:
         attributes = attributes_line.split(";")
         # print(attributes)
         for attribute in attributes:
-            exclusionZoneExists = False #Ensure ExclusionZone is false
             # print("     " + attribute)
             attribute = attribute.strip()[1:-1]
             parts = attribute.split(",")
@@ -76,25 +75,24 @@ class ABACPolicyLoader:
             if(declaration.get_name() == "exclusionZone"): #if the current object is exclusion
                 exclusionZone = value.split("!")#split into radius and value
                 radius = int(exclusionZone[0].strip()) #radius is radius of the zone
-                value = exclusionZone[1].strip() #value is 
-                exclusionZoneExists=True
+                value = exclusionZone[1].strip() #value is the value we will give to the attribute which will determine whether or not its allowed in
                 permission_Attributes = pa_relation.get_dictionary()
-                def addPerm(a,b):
-                    if(str("Grid"+str(a)+"x"+str(b)) in permission_Attributes.keys()):
-                            if(value == "Denial"):
-                                for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]:
+                def addPerm(a,b): 
+                    if(str("Grid"+str(a)+"x"+str(b)) in permission_Attributes.keys()):#checks if the grid position is in keys
+                            if(value == "Denial"): #if the value is denial add Denial to everything so noone is allowed in
+                                for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]: 
                                     entry.append(AttributeInstance(AttributeDeclaration("Denied","Boolean"),True))
-                            else:
+                            else:#else they can only enter if they are owned by the value set by ExclusionZone
                                 for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]:
                                     entry.append(AttributeInstance(AttributeDeclaration("ownedBy","String"),value))
-                position = result[0].get_value().split("x")
-                row = int(str(position[0])[4:])
+                position = result[0].get_value().split("x") # grabs the location data of the current attributes
+                row = int(str(position[0])[4:]) 
                 column = int(position[1])
                 addPerm(row,column)
                 for x in range(-radius,radius+1):
                     for y in range(-radius,radius+1):
                         addPerm(row+x,column+y)
-            result.sort(key=mySort, reverse=True)
+        result.sort(key=mySort, reverse=True)
         return result
        
 
