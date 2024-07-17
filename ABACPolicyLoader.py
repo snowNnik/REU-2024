@@ -72,6 +72,7 @@ class ABACPolicyLoader:
             value = parts[1].strip()
             declaration = ABACPolicyLoader.get_declaration(name, declarations_list)
             result.append(AttributeInstance(declaration, value))
+            result.sort(key=mySort, reverse=True)
             if(declaration.get_name() == "exclusionZone"): #if the current object is exclusion
                 exclusionZone = value.split("!")#split into radius and value
                 radius = int(exclusionZone[0].strip()) #radius is radius of the zone
@@ -92,7 +93,6 @@ class ABACPolicyLoader:
                 for x in range(-radius,radius+1):
                     for y in range(-radius,radius+1):
                         addPerm(row+x,column+y)
-        result.sort(key=mySort, reverse=True)
         return result
        
 
