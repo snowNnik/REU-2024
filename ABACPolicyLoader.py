@@ -55,13 +55,17 @@ class ABACPolicyLoader:
         return None
 
     @staticmethod
-    def read_attribute_instances(attributes_line: str, declarations_list: List[AttributeDeclaration]) -> List[AttributeInstance]:
+    def read_attribute_instances(attributes_line: str, declarations_list: List[AttributeDeclaration], permission =None) -> List[AttributeInstance]:
         def mySort(e):
             return e.get_declaration().get_name() == "userName"
+        
         result = []
+        radius = ""
+        type = ""
         attributes = attributes_line.split(";")
         # print(attributes)
         for attribute in attributes:
+            exclusionZoneExists = False #Ensure ExclusionZone is false
             # print("     " + attribute)
             attribute = attribute.strip()[1:-1]
             parts = attribute.split(",")
@@ -69,8 +73,30 @@ class ABACPolicyLoader:
             value = parts[1].strip()
             declaration = ABACPolicyLoader.get_declaration(name, declarations_list)
             result.append(AttributeInstance(declaration, value))
+            if(declaration.get_name() == "exclusionZone"): #if the current object is exclusion
+                exclusionZone = value.split("!")#split into radius and value
+                radius = int(exclusionZone[0].strip()) #radius is radius of the zone
+                value = exclusionZone[1].strip() #value is 
+                exclusionZoneExists=True
+                permission_Attributes = pa_relation.get_dictionary()
+                def addPerm(a,b):
+                    if(str("Grid"+str(a)+"x"+str(b)) in permission_Attributes.keys()):
+                            if(value == "Denial"):
+                                for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]:
+                                    entry.append(AttributeInstance(AttributeDeclaration("Denied","Boolean"),True))
+                            else:
+                                for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]:
+                                    entry.append(AttributeInstance(AttributeDeclaration("ownedBy","String"),value))
+                position = result[0].get_value().split("x")
+                row = int(str(position[0])[4:])
+                column = int(position[1])
+                addPerm(row,column)
+                for x in range(-radius,radius+1):
+                    for y in range(-radius,radius+1):
+                        addPerm(row+x,column+y)
             result.sort(key=mySort, reverse=True)
         return result
+       
 
     @staticmethod
     def get_permission(permission_name: str, permissions: List[Permission]) -> Permission:
@@ -108,7 +134,7 @@ class ABACPolicyLoader:
         return original_list
 
     @staticmethod
-    def read_aa(aa_line: str, entities: List[Entity], attribute_declarations_list: List[AttributeDeclaration], instances: List[AttributeInstance]) -> AARelation:
+    def read_aa(aa_line: str, entities: List[Entity], attribute_declarations_list: List[AttributeDeclaration], instances: List[AttributeInstance],permission =None) -> AARelation:
         result = AARelation()
         entries = aa_line.split("-")
         for entry in entries:
@@ -116,20 +142,21 @@ class ABACPolicyLoader:
             entity_name = parts[1].strip()[1:-1]
             # print("Entity Attributes " + entity_name)
             attributes = parts[0].strip()
-            user_attributes = ABACPolicyLoader.read_attribute_instances(
-                attributes, attribute_declarations_list)
-            instances = ABACPolicyLoader.mix_attribute_instance_lists(
-                instances, user_attributes)
+            user_attributes = ABACPolicyLoader.read_attribute_instances(attributes, attribute_declarations_list, permission)
+            instances = ABACPolicyLoader.mix_attribute_instance_lists( instances, user_attributes)
             entity = ABACPolicyLoader.get_entity(entity_name, entities)
             result.add_relation_entry(entity, user_attributes)
         return result
 
     @staticmethod
     def load_abac_policy(filename: str) -> ABACPolicy:
+        def mySort(e):
+            return e.get_name() != "Entry"
         entities = None
         attribute_declarations = None
         attribute_instances = []
         permissions = None
+        global pa_relation
         pa_relation = None
         aa_relation = None
         filename = "../REU-2024/inputs/" + str(filename)
@@ -141,12 +168,12 @@ class ABACPolicyLoader:
                         parts[1])
                 elif parts[0].strip() == "PERMS":
                     permissions = ABACPolicyLoader.read_permissions(parts[1])
+                    permissions.sort(key=mySort)
+                    print([str(x) for x in permissions])
                 elif parts[0].strip() == "ENTITIES":
                     entities = ABACPolicyLoader.read_entities(parts[1])
                 elif parts[0].strip() == "PA":
-                    pa_relation = ABACPolicyLoader.read_pa(
-                        parts[1], permissions, attribute_declarations, attribute_instances)
+                    pa_relation = ABACPolicyLoader.read_pa( parts[1], permissions, attribute_declarations, attribute_instances)
                 elif parts[0].strip() == "AA":
-                    aa_relation = ABACPolicyLoader.read_aa(
-                        parts[1], entities, attribute_declarations, attribute_instances)
+                    aa_relation = ABACPolicyLoader.read_aa(parts[1], entities, attribute_declarations, attribute_instances,permissions[0])
         return ABACPolicy(entities, permissions, attribute_declarations, attribute_instances, pa_relation, aa_relation)

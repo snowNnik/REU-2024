@@ -29,8 +29,6 @@ class ABACMonitor:
             if x.get_declaration is not None:
                 print("     " + str(x))'''
         for entry in self.policy.pa_relation.get_entries(permission, row, col):
-            '''print("Attribute Check")
-            print("     " + str(entry))'''
             if all(attr in attribute_bag for attr in entry):
                 return True
         return False
