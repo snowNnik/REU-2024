@@ -82,15 +82,14 @@ class ABACPolicyLoader:
                     if(str("Grid"+str(a)+"x"+str(b)) in permission_Attributes.keys()):#checks if the grid position is in keys
                             if(value == "Denial"): #if the value is denial add Denial to everything so noone is allowed in
                                 for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]: 
-                                    entry.append(AttributeInstance(AttributeDeclaration("Denied","Boolean"),True))
+                                    entry.append(AttributeInstance(AttributeDeclaration("Denied","Boolean"),True))#for each entry permission list related to that grid space add the  attribute
                             else:#else they can only enter if they are owned by the value set by ExclusionZone
                                 for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]:
                                     entry.append(AttributeInstance(AttributeDeclaration("ownedBy","String"),value))
                 position = result[0].get_value().split("x") # grabs the location data of the current attributes
                 row = int(str(position[0])[4:]) 
                 column = int(position[1])
-                addPerm(row,column)
-                for x in range(-radius,radius+1):
+                for x in range(-radius,radius+1):#goes through each square to add the permissions
                     for y in range(-radius,radius+1):
                         addPerm(row+x,column+y)
         return result
