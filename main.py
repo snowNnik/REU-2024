@@ -37,7 +37,6 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
                         grid[row].append(0)
                         continue
                 if(policy.get_pa_relation().get_entries(policy.get_permission(permission_id),object_id)!= None):
-                    print("activates")
                     grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy,row,col))
             
 def execute_command(command):
