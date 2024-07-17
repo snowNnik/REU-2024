@@ -14,9 +14,21 @@ class PARelation:
 
     def get_entries(self, permission,Gridpos,col=None):
         if col is None:
-            return self.relation_table[Gridpos][permission]
+            print(Gridpos + " " + str(permission))
+            if(Gridpos in self.relation_table.keys()):
+                print(permission in self.relation_table[Gridpos].keys())
+                if(permission in self.relation_table[Gridpos].keys()):
+                   return self.relation_table[Gridpos][permission]
+                else:
+                    return None
+            else:
+                return None
         else:
-            return self.relation_table["Grid"+str(Gridpos)+"x"+str(col)][permission]
+            if("Grid"+str(Gridpos)+"x"+str(col) in self.relation_table.keys() ):
+                if(permission in self.relation_table["Grid"+str(Gridpos)+"x"+str(col)].keys()):
+                    return self.relation_table["Grid"+str(Gridpos)+"x"+str(col)][permission]
+            else:
+                return None
     def get_dictionary(self):
         entries = self.relation_table
         return entries

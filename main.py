@@ -31,8 +31,15 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
             grid.append([])
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
-                grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy,row,col))
-  
+                if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):
+                    nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
+                    if nonEntry:
+                        grid[row].append(0)
+                        continue
+                if(policy.get_pa_relation().get_entries(policy.get_permission(permission_id),object_id)!= None):
+                    print("activates")
+                    grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy,row,col))
+            
 def execute_command(command):
     global policy
     global path
