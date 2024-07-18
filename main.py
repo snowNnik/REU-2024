@@ -34,6 +34,7 @@ def build_grid(user_id, environment_id, rows, columns, policy):
                 object_id = "Grid" + str(row) + "x" + str(col)
                 if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):
                     nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
+                    
                     if nonEntry:
                         new_row.append(0)
                         continue
@@ -99,13 +100,13 @@ def execute_command(command):
 
 
 if __name__ == "__main__":
-    command_line = " ".join(sys.argv) # Grab the input file inputs
-    command_line = command_line[8:] # skip the main.py part of the input file
-    command_line = "../REU-2024/inputs/" + str(command_line) # Builds file to read
-    commandFile = open(command_line, "r") # Read file
-    commands = commandFile.read().split(";") # Split into different commands
-    policy = None
-    for command in commands:
+    command_line = " ".join(sys.argv)#Grab the command line input
+    command_line = command_line[8:]# skip the main.py part of the command line command 
+    command_line = "../REU-2024/inputs/" + str(command_line) #redrect to the folders
+    commandFile = open(command_line, "r") # opens the file which was referenced by command line
+    commands = commandFile.read().split(";") #reads the line of the file and splits it into commands (seen in the execute_command Menu) spaced out between ; See Example1_Input.txt as an example
+    policy = None # holds policy for later use
+    for command in commands: #for every command strip out the spaces and run execute command
         execute_command(command.strip())
     print(' ') # Spacer
     for line in grid:
