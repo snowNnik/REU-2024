@@ -51,7 +51,6 @@ def execute_command(command):
             #print(command_parts[1])
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
         case "build-grid":
-            print(command_parts[3])
             rowsAndColums = command_parts[4].strip()[1:-1]
             rowsAndColums = rowsAndColums.split(",")
             row = int(rowsAndColums[0])
