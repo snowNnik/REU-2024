@@ -1,1 +1,1 @@
-load-policy Example1.txt; build-grid Drone ENV Entry <10,10>; make-path <4,0> <4,9>
+load-policy Example1.txt; build-grid Drone ENV <10,10>; make-path <4,0> <4,9>

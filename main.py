@@ -17,6 +17,7 @@ def check_permission(user_id, object_id, environment_id, permission_id, policy, 
         environment = policy.get_entity(environment_id)
         monitor = ABACMonitor(policy)  # creating instance
         result = monitor.check_access(user, obj, environment, permission, row,col)
+        print(result)
         if result:
             # print("Permission GRANTED!")
             return 1
@@ -34,11 +35,12 @@ def build_grid(user_id, environment_id, rows, columns, policy):
                 object_id = "Grid" + str(row) + "x" + str(col)
                 #print(policy.get_permission('nonEntry'))
                 if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):
-                    nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
                     
+                    nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
                     if nonEntry:
                         new_row.append(0)
                         continue
+                
                 if(policy.get_pa_relation().get_entries(policy.get_permission('Entry'),object_id)!= None):
                     new_row.append(check_permission(user_id, object_id, environment_id, 'Entry', policy,row,col))
                 else:
@@ -110,6 +112,6 @@ if __name__ == "__main__":
     for command in commands: #for every command strip out the spaces and run execute command
         execute_command(command.strip())
     print(' ') # Spacer
-    for line in grid:
-        print(line)
+    for line in grid: 
+        print(line) 
     showGrid(grid, path)
