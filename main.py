@@ -48,15 +48,15 @@ def build_grid(user_id, environment_id, rows, columns, policy):
             grid.append(new_row)
             
 def execute_command(command):
-    global policy
-    global path
-    command_parts = command.split(" ")
-    if len(command_parts) == 0:
+    global policy  
+    global path 
+    command_parts = command.split(" ") #splits command into arguments
+    if len(command_parts) == 0: #if there are no arguments execute next command
         return
-    match command_parts[0]:
-        case "load-policy":
+    match command_parts[0]:#First arguement dictates what method to execute
+        case "load-policy": #loads the Attributes, Permissions, Entities and assigns Attributes to Permissions and Entities as defined in the file 
             # load-policy inputfile.txt
-            policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
+            policy = ABACPolicyLoader.load_abac_policy(command_parts[1]) #the first arguement should be the name of the file setup similar to the Example1.txt file
         case "build-grid":
             # build-grid Drone_id ENV <row#,col#>  
             rowsAndColums = command_parts[3].strip()[1:-1]
@@ -72,8 +72,7 @@ def execute_command(command):
         case "show-policy": # UNUSED
             print(policy)
         case "check-permission": # UNUSED
-            check_permission(
-                command_parts[1], command_parts[2], command_parts[3], command_parts[4], policy)
+            check_permission(command_parts[1], command_parts[2], command_parts[3], command_parts[4], policy)
         case "add-entity": # UNUSED
             policy.add_entity(command_parts[1])
         case "remove-entity": # UNUSED
@@ -111,7 +110,8 @@ if __name__ == "__main__":
     policy = None # holds policy for later use
     for command in commands: #for every command strip out the spaces and run execute command
         execute_command(command.strip())
-    print(' ') # Spacer
-    for line in grid: 
+    print(' ') # Space
+    for line in grid: #prints each line in the girds 1s represent areas the drone can enter, 0s represent spaces the drone cannot enter 
         print(line) 
-    showGrid(grid, path)
+    showGrid(grid, path) #draws a grid and path of the drone in a 2D grid in a tk drawing where the green spaces represent places the drone is allowed to enter, 
+    # red spaces represent where the drone is not allowed to enter and a blue represents the drone's path 
