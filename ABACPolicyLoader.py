@@ -56,10 +56,10 @@ class ABACPolicyLoader:
         return None
 
     @staticmethod
-    def read_attribute_instances(attributes_line: str, declarations_list: List[AttributeDeclaration], permission =None) -> List[AttributeInstance]:
+    def read_attribute_instances(attributes_line: str, declarations_list: List[AttributeDeclaration]) -> List[AttributeInstance]:
         def mySort(e):
             return e.get_declaration().get_name() == "userName"
-        
+        exclusionZoneExists= False
         result = []
         radius = ""
         type = ""
@@ -73,26 +73,34 @@ class ABACPolicyLoader:
             value = parts[1].strip()
             declaration = ABACPolicyLoader.get_declaration(name, declarations_list)
             result.append(AttributeInstance(declaration, value))
-            result.sort(key=mySort, reverse=True)
-            if(declaration.get_name() == "exclusionZone"): #if the current object is exclusion
+            if(declaration.get_name() == "exclusionZone" and not(exclusionZoneExists)): #if the current object is exclusion
                 exclusionZone = value.split("!")#split into radius and value
                 radius = int(exclusionZone[0].strip()) #radius is radius of the zone
                 value = exclusionZone[1].strip() #value is the value we will give to the attribute which will determine whether or not its allowed in
-                permission_Attributes = pa_relation.get_dictionary()
-                def addPerm(a,b): 
-                    if(str("Grid"+str(a)+"x"+str(b)) in permission_Attributes.keys()):#checks if the grid position is in keys
-                            if(value == "Denial"): #if the value is denial add Denial to everything so noone is allowed in
-                                for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]: 
-                                    entry.append(AttributeInstance(AttributeDeclaration("Denied","Boolean"),True))#for each entry permission list related to that grid space add the  attribute
-                            else:#else they can only enter if they are owned by the value set by ExclusionZone
-                                for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]:
-                                    entry.append(AttributeInstance(AttributeDeclaration("ownedBy","String"),value))
-                position = result[0].get_value().split("x") # grabs the location data of the current attributes
-                row = int(str(position[0])[4:]) 
-                column = int(position[1])
-                for x in range(-radius,radius+1):#goes through each square to add the permissions
-                    for y in range(-radius,radius+1):
-                        addPerm(row+x,column+y)
+                exclusionZoneExists= True
+        result.sort(key=mySort, reverse=True)
+        if(exclusionZoneExists==True):
+            permission_Attributes = pa_relation.get_dictionary()
+            def addPerm(a,b): 
+                if(str("Grid"+str(a)+"x"+str(b)) in permission_Attributes.keys()):#checks if the grid position is in keys
+                    if(value == "D"): #if the value is denial add Denial to everything so noone is allowed in
+                        permission = ABACPolicyLoader.get_permission("nonEntry", permissions)
+                        if(not(permission in permission_Attributes[str("Grid"+str(a)+"x"+str(b))])):
+                            
+                            permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission] = [[AttributeInstance(AttributeDeclaration("userName","String"),str("Grid"+str(a)+"x"+str(b)))]]
+                        else:
+                            for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]: 
+                                entry.append(AttributeInstance(AttributeDeclaration("Denied","Boolean"),True))#for each entry permission list related to that grid space add the  attribute
+                    else:#else they can only enter if they are owned by the value set by ExclusionZone
+                        permission = ABACPolicyLoader.get_permission("Entry", permissions)
+                        for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]:
+                            entry.append(AttributeInstance(AttributeDeclaration("ownedBy","String"),value))
+            position = result[0].get_value().split("x") # grabs the location data of the current attributes
+            row = int(str(position[0])[4:]) 
+            column = int(position[1])
+            for x in range(-radius,radius+1):#goes through each square to add the permissions
+                for y in range(-radius,radius+1):
+                    addPerm(row+x,column+y)
         return result
        
 
@@ -140,7 +148,7 @@ class ABACPolicyLoader:
             entity_name = parts[1].strip()[1:-1]
             # print("Entity Attributes " + entity_name)
             attributes = parts[0].strip()
-            user_attributes = ABACPolicyLoader.read_attribute_instances(attributes, attribute_declarations_list, permission)
+            user_attributes = ABACPolicyLoader.read_attribute_instances(attributes, attribute_declarations_list)
             instances = ABACPolicyLoader.mix_attribute_instance_lists( instances, user_attributes)
             entity = ABACPolicyLoader.get_entity(entity_name, entities)
             result.add_relation_entry(entity, user_attributes)
@@ -153,6 +161,7 @@ class ABACPolicyLoader:
         entities = None
         attribute_declarations = None
         attribute_instances = []
+        global permissions
         permissions = None
         global pa_relation
         pa_relation = None
