@@ -31,7 +31,7 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
             grid.append([])
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
-                print(policy.get_permission('nonEntry'))
+                #print(policy.get_permission('nonEntry'))
                 if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):
                     nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
                     
@@ -40,7 +40,8 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
                         continue
                 if(policy.get_pa_relation().get_entries(policy.get_permission(permission_id),object_id)!= None):
                     grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy,row,col))
-                print("NOT HERE")
+                else:
+                    print("NOT HERE")
             
 def execute_command(command):
     global policy
@@ -112,4 +113,3 @@ if __name__ == "__main__":
     for line in grid:
         print(line)
     showGrid(grid, path)
-    

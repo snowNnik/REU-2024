@@ -29,7 +29,7 @@ class ABACPolicyLoader:
             # print(attr)
             attr = attr.strip()[1:-1]
             parts = attr.split(",")
-            print(parts)
+            #print(parts)
             declaration = AttributeDeclaration(
                 parts[1].strip(), parts[0].strip())
             result.append(declaration)
