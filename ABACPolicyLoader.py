@@ -73,6 +73,7 @@ class ABACPolicyLoader:
             declaration = ABACPolicyLoader.get_declaration(name, declarations_list)
             result.append(AttributeInstance(declaration, value))
             if(declaration.get_name() == "exclusionZone" and not(exclusionZoneExists)): #if the current object is exclusion
+                print(value)
                 exclusionZone = value.split("!")#split into radius and value
                 radius = int(exclusionZone[0].strip()) #radius is radius of the zone
                 value = exclusionZone[1].strip() #value is the value we will give to the attribute which will determine whether or not its allowed in
@@ -85,7 +86,6 @@ class ABACPolicyLoader:
                     if(value == "D"): #if the value is denial add Denial to everything so noone is allowed in
                         permission = ABACPolicyLoader.get_permission("nonEntry", permissions)
                         if(not(permission in permission_Attributes[str("Grid"+str(a)+"x"+str(b))])):
-                            
                             permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission] = [[AttributeInstance(AttributeDeclaration("userName","String"),str("Grid"+str(a)+"x"+str(b)))]]
                         else:
                             for entry in permission_Attributes[str("Grid"+str(a)+"x"+str(b))][permission]: 

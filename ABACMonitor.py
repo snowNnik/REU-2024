@@ -28,6 +28,15 @@ class ABACMonitor:
         for x in attribute_bag:
             if x.get_declaration is not None:
                 print("     " + str(x))'''
+        
+        for entry in self.policy.pa_relation.get_entries(permission, row, col):
+            print("Grid" + str(row) + "x" + str(col) + " " + str(permission), end="")
+            for x in entry:
+                print(str(x), end=" ")
+            print(" vs ", end=" ")
+            for entry in attribute_bag:
+                print(str(entry), end=" ")
+            print()
         for entry in self.policy.pa_relation.get_entries(permission, row, col):
             if all(attr in attribute_bag for attr in entry):
                 return True
