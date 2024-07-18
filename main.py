@@ -18,17 +18,18 @@ def check_permission(user_id, object_id, environment_id, permission_id, policy, 
         monitor = ABACMonitor(policy)  # creating instance
         result = monitor.check_access(user, obj, environment, permission, row,col)
         if result:
-            #print("Permission GRANTED!")
+            # print("Permission GRANTED!")
             return 1
         else:
-            #print("Permission DENIED!")
+            # print("Permission DENIED!")
             return 0
-def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
+        
+def build_grid(user_id, environment_id, rows, columns, policy):
     if policy is not None:
         global grid 
         grid = []
         for row in range(int(rows)):
-            grid.append([])
+            new_row = []
             for col in range(int(columns)):
                 object_id = "Grid" + str(row) + "x" + str(col)
                 #print(policy.get_permission('nonEntry'))
@@ -36,12 +37,13 @@ def build_grid(user_id, environment_id, permission_id, rows, columns, policy):
                     nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
                     
                     if nonEntry:
-                        grid[row].append(0)
+                        new_row.append(0)
                         continue
-                if(policy.get_pa_relation().get_entries(policy.get_permission(permission_id),object_id)!= None):
-                    grid[row].append(check_permission(user_id, object_id, environment_id, permission_id, policy,row,col))
+                if(policy.get_pa_relation().get_entries(policy.get_permission('Entry'),object_id)!= None):
+                    new_row.append(check_permission(user_id, object_id, environment_id, 'Entry', policy,row,col))
                 else:
-                    print("NOT HERE")
+                    raise Exception("Missing Permission, Entry, or PARelation")
+            grid.append(new_row)
             
 def execute_command(command):
     global policy
@@ -51,49 +53,47 @@ def execute_command(command):
         return
     match command_parts[0]:
         case "load-policy":
-            #print(command_parts[1])
+            # load-policy inputfile.txt
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1])
         case "build-grid":
-            #print(command_parts[3])
-            rowsAndColums = command_parts[4].strip()[1:-1]
+            # build-grid Drone_id ENV <row#,col#>  
+            rowsAndColums = command_parts[3].strip()[1:-1]
             rowsAndColums = rowsAndColums.split(",")
-            row = int(rowsAndColums[0])
-            colmun = int(rowsAndColums[1])
-            build_grid(command_parts[1], command_parts[2],command_parts[3],rowsAndColums[0],rowsAndColums[1], policy)
+            build_grid(command_parts[1], command_parts[2],rowsAndColums[0],rowsAndColums[1], policy)
         case "make-path":
+            # make-path <from_row#, from_col#> <to_row#, to_col#>
             startPos = command_parts[1].strip()[1:-1].split(",")
             startPos = [eval(x) for x in startPos]
             destPos = command_parts[2].strip()[1:-1].split(",")
             destPos = [eval(x) for x in destPos]
-            path = a_star_search(grid, startPos,destPos)
-            
-        case "show-policy":
+            path = a_star_search(grid, startPos, destPos)
+        case "show-policy": # UNUSED
             print(policy)
-        case "check-permission":
+        case "check-permission": # UNUSED
             check_permission(
                 command_parts[1], command_parts[2], command_parts[3], command_parts[4], policy)
-        case "add-entity":
+        case "add-entity": # UNUSED
             policy.add_entity(command_parts[1])
-        case "remove-entity":
+        case "remove-entity": # UNUSED
             policy.remove_entity(command_parts[1])
-        case "add-attribute":
+        case "add-attribute": # UNUSED
             policy.add_attribute_declaration(
                 command_parts[1], command_parts[2])
-        case "remove-attribute":
+        case "remove-attribute": # UNUSED
             policy.remove_attribute_declaration(command_parts[1])
-        case "add-permission":
+        case "add-permission": # UNUSED 
             policy.add_permission(command_parts[1])
-        case "remove-permission":
+        case "remove-permission": # UNUSED
             policy.remove_permission(command_parts[1])
-        case "add-attributes-to-permission":
+        case "add-attributes-to-permission": # UNUSED
             policy.add_permission_to_attribute(command_parts)
-        case "remove-attribute-from-permission":
+        case "remove-attribute-from-permission": # UNUSED
             policy.remove_attribute_from_permission(
                 command_parts[1], command_parts[2], command_parts[3])
-        case "add-attribute-to-entity":
+        case "add-attribute-to-entity": # UNUSED
             policy.add_attribute_to_entity(
                 command_parts[1], command_parts[2], command_parts[3])
-        case "remove-attribute-from-entity":
+        case "remove-attribute-from-entity": # UNUSED 
             policy.remove_attribute_from_entity(
                 command_parts[1], command_parts[2], command_parts[3])
         case _:
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     policy = None # holds policy for later use
     for command in commands: #for every command strip out the spaces and run execute command
         execute_command(command.strip())
-    print(' ')
+    print(' ') # Spacer
     for line in grid:
         print(line)
     showGrid(grid, path)

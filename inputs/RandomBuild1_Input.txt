@@ -1,1 +1,1 @@
-load-policy RandomBuild1.txt; build-grid Drone ENV Entry <15,30>; make-path <0,0> <12,27>
+load-policy RandomBuild1.txt; build-grid Drone ENV <15,30>; make-path <0,0> <12,27>
