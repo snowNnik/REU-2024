@@ -1,6 +1,8 @@
 class AttributeDeclaration:
-    def __init__(self, name: str, datatype: str):
+    def __init__(self, name: str, datatype: str):#creates the attribute declaration object which stores the name and datatype of an Attribute
+        #the name variable is mostly used for comparisons 
         self.name = name
+        #data type isn't really used
         self.datatype = datatype
 
     def get_name(self) -> str:

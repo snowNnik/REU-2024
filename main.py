@@ -9,32 +9,35 @@ from Permission import *
 from pathing import *
 from graph import *
 
-def check_permission(user_id, object_id, environment_id, permission_id, policy, row, col):
-    if policy is not None:
-        user = policy.get_entity(user_id)
-        obj = policy.get_entity(object_id)
-        permission = policy.get_permission(permission_id)
-        environment = policy.get_entity(environment_id)
-        monitor = ABACMonitor(policy)  # creating instance
-        result = monitor.check_access(user, obj, environment, permission, row,col)
-        print(result)
+def check_permission(user_id, object_id, environment_id, permission_id, policy, row, col):#checks whether or user-id has access to do permission on the object_id
+    if policy is not None:#if policy exsists 
+        user = policy.get_entity(user_id) #the user entity is retrieved
+        obj = policy.get_entity(object_id)#the object entity being acted on is retrieved
+        permission = policy.get_permission(permission_id)#the relevant permission is retrieved
+        environment = policy.get_entity(environment_id)#the environment is retrieved
+        monitor = ABACMonitor(policy)  # creating instance of ABACMonitor
+        result = monitor.check_access(user, obj, environment, permission, row,col)#
+        #print(result)
         if result:
             # print("Permission GRANTED!")
             return 1
         else:
             # print("Permission DENIED!")
             return 0
-        
-def build_grid(user_id, environment_id, rows, columns, policy):
-    if policy is not None:
+    else:
+        print("policy not found")
+def build_grid(user_id, environment_id, rows, columns, policy):#creates the grid that the drone will navigate through where a 1 symbolizes where the drone is allow to go and
+    #0 represents where the drone cannot go
+    if policy is not None:#
         global grid 
         grid = []
-        for row in range(int(rows)):
+        for row in range(int(rows)):#For every row and column specified in the input file check to see if the user has permission to enter the square or not
             new_row = []
             for col in range(int(columns)):
-                object_id = "Grid" + str(row) + "x" + str(col)
+                object_id = "Grid" + str(row) + "x" + str(col) 
                 #print(policy.get_permission('nonEntry'))
-                if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):
+                if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):#if nonEntry is in the PARelation's dictionary entry at the 
+                    #key of ""Grid" + str(row) + "x" + str(col)"" then check to see if the drone should be denied entry before we consider whether it can enter
                     
                     nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
                     if nonEntry:
@@ -46,7 +49,8 @@ def build_grid(user_id, environment_id, rows, columns, policy):
                 else:
                     raise Exception("Missing Permission, Entry, or PARelation")
             grid.append(new_row)
-            
+    else:
+        print("Policy not found")
 def execute_command(command):
     global policy  
     global path 
@@ -59,8 +63,7 @@ def execute_command(command):
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1]) #the first arguement should be the name of the file setup similar to the Example1.txt file
         case "build-grid":
             # build-grid Drone_id ENV <row#,col#>  
-            rowsAndColums = command_parts[3].strip()[1:-1]
-            rowsAndColums = rowsAndColums.split(",")
+            rowsAndColums = command_parts[3].strip()[1:-1].split(",") #grabs the number of rows and columns and separates them into into the row and column numbers to be used to build the gird
             build_grid(command_parts[1], command_parts[2],rowsAndColums[0],rowsAndColums[1], policy)
         case "make-path":
             # make-path <from_row#, from_col#> <to_row#, to_col#>

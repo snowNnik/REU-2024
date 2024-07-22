@@ -2,15 +2,20 @@ from typing import List
 
 class PARelation:
     def __init__(self):
+        #creates an empty dictionary which will have it's keys be the names of properties which the user is trying to enter, which will access another dictionary whose keys
+        #are the different permissions associated with the property like Entry and nonEntry which hold the attributes associated with those permsions
         self.relation_table = {}
 
     def add_relation_entry(self, permission, instances):
-        entries = self.relation_table
-        if(not(str(instances[0].get_value()) in entries.keys())):
+        entries = self.relation_table 
+        if(not(str(instances[0].get_value()) in entries.keys())):#if the username of the property isn't already a keyin the dictionary then create an empty dictionary with that as
+            #its key
             entries[str(instances[0].get_value())] = {}
-        if(not(permission in entries[str(instances[0].get_value())].keys())):
+        if(not(permission in entries[str(instances[0].get_value())].keys())):#if the permission is not already a key under the gridspace's username then create an empty list
+            #in the nested dictionary with the permission as it's key
             entries[str(instances[0].get_value())][permission] = []
-        entries[str(instances[0].get_value())][permission].append(instances)
+        entries[str(instances[0].get_value())][permission].append(instances) #add the instaces to the list inside the dictionary where the permissions are keys inside the dictonary where
+        #the usernames of grid spaces are keys
 
     def get_entries(self, permission,Gridpos,col=None):
         if col is None:

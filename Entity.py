@@ -1,5 +1,6 @@
 class Entity:
     def __init__(self, name, assigned_attributes=None):
+        #name is a string used for comparison 
         self.name = name
         self.assigned_attributes = assigned_attributes if assigned_attributes is not None else []
 
