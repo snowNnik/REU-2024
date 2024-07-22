@@ -35,7 +35,6 @@ def build_grid(user_id, environment_id, rows, columns, policy):
                 #print(policy.get_permission('nonEntry'))
                 if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):
                     nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
-                    
                     if nonEntry:
                         new_row.append(0)
                         continue

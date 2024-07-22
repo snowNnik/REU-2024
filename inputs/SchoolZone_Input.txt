@@ -1,0 +1,1 @@
+load-policy SchoolZone.txt; build-grid Drone ENV <7,10>; make-path <0,4> <6,4>

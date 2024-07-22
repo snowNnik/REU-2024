@@ -35,3 +35,5 @@ def showGrid(matrix, path):
     canvas.create_line(path_coords, fill="blue", width=2)
 
     root.mainloop()
+
+showGrid(MAT, p)
