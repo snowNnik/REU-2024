@@ -48,7 +48,7 @@ def showGrid(matrix, path):
     canvas.create_text(end_x, end_y, text="X", fill="Black", font=("Helvetica", 16, "bold"))
 
     # Load and resize the GIF
-    original_gif = PhotoImage(file="C://Users//saian//Desktop//drone.png")  ############## Change path accordingly #################
+    original_gif = PhotoImage(file="./drone.png")  ############## Change path accordingly #################
     # Resize the image
     resized_gif = original_gif.subsample(6,5)  # Adjust the subsample factor as needed
     drone_img = resized_gif
@@ -67,5 +67,3 @@ def showGrid(matrix, path):
     move_drone()
 
     root.mainloop()
-
-showGrid(MAT, p)
