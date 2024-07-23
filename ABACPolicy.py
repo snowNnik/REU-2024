@@ -128,37 +128,37 @@ class ABACPolicy:
             # implementation missing
             pass
 
-    def get_entities(self):
+    def get_entities(self):#retrieves list of Entity objects
         return self.entities
-
+ 
     def set_entities(self, entities):
         self.entities = entities
 
-    def get_attribute_declarations(self):
+    def get_attribute_declarations(self):#retrieves list of Attribute_Declarations objects
         return self.attribute_declarations
 
     def set_attribute_declarations(self, attribute_declarations):
         self.attribute_declarations = attribute_declarations
 
-    def get_attribute_instances(self):
+    def get_attribute_instances(self):#retrieves list of Attribute_Instances objects
         return self.attribute_instances
 
     def set_attribute_instances(self, attribute_instances):
         self.attribute_instances = attribute_instances
 
-    def get_permissions(self):
+    def get_permissions(self):#retrieves list of Permission objects
         return self.permissions
 
     def set_permissions(self, permissions):
         self.permissions = permissions
 
-    def get_pa_relation(self):
+    def get_pa_relation(self):#returns PARelation Object
         return self.pa_relation
 
     def set_pa_relation(self, pa_relation):
         self.pa_relation = pa_relation
 
-    def get_aa_relation(self):
+    def get_aa_relation(self):#Returns AARelation
         return self.aa_relation
 
     def set_aa_relation(self, aa_relation):

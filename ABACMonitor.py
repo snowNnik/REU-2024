@@ -39,7 +39,7 @@ class ABACMonitor:
                 return True
         return False #Otherwise return False 
 
-
+    #unused
 if __name__ == "__main__":
     write_permission = Permission("writePermission")
     read_permission = Permission("readPermission")

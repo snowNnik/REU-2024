@@ -51,15 +51,16 @@ class AARelation:
             self.relation_table[entity.name].attributes.extend(attributes)
         else: #other wise create the entry with entity.name as the key and create the AAReltaionEntry with the entity object and the List of AttributesInstances objects 
             self.relation_table[entity.name] = self.AARelationEntry(entity, attributes)
-
+    
+    #Unused
     def get_attributes(self, entity):
         entry = self.relation_table.get(entity.name)
         return entry.attributes if entry else None
-
+    #unused
     def are_related(self, entity, attribute):
         entry = self.relation_table.get(entity.name)
         return attribute in entry.attributes if entry else False
-
+    
     def __str__(self):
         return "\n".join(str(entry) for entry in self.relation_table.values())
 
