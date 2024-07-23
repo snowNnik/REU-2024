@@ -25,7 +25,7 @@ def check_permission(user_id, object_id, environment_id, permission_id, policy, 
             # print("Permission DENIED!")
             return 0
     else:
-        print("policy not found")
+       raise Exception("policy not found")
 def build_grid(user_id, environment_id, rows, columns, policy):#creates the grid that the drone will navigate through where a 1 symbolizes where the drone is allow to go and
     #0 represents where the drone cannot go
     if policy is not None:#
@@ -39,18 +39,19 @@ def build_grid(user_id, environment_id, rows, columns, policy):#creates the grid
                 if(policy.get_pa_relation().get_entries(policy.get_permission('nonEntry') ,object_id) != None):#if nonEntry is in the PARelation's dictionary entry at the 
                     #key of ""Grid" + str(row) + "x" + str(col)"" then check to see if the drone should be denied entry before we consider whether it can enter
                     
-                    nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col)
-                    if nonEntry:
+                    nonEntry = check_permission(user_id,object_id, environment_id, 'nonEntry', policy,row,col) #check to see if there are attributes such that the user
+                    #cannot enter the square
+                    if nonEntry:#if there are are attributes such that prevent the user from entering the property then add 0 to the grid in place   
                         new_row.append(0)
                         continue
                 
-                if(policy.get_pa_relation().get_entries(policy.get_permission('Entry'),object_id)!= None):
-                    new_row.append(check_permission(user_id, object_id, environment_id, 'Entry', policy,row,col))
-                else:
+                if(policy.get_pa_relation().get_entries(policy.get_permission('Entry'),object_id)!= None):#if there are attributes in PARelation
+                    new_row.append(check_permission(user_id, object_id, environment_id, 'Entry', policy,row,col)) #append either 1 or 0 depending on whether or not you can endter the square
+                else:#otherwise raise an exception because something went catastrophically wrong
                     raise Exception("Missing Permission, Entry, or PARelation")
-            grid.append(new_row)
-    else:
-        print("Policy not found")
+            grid.append(new_row)#append the row to the grid
+    else:# no policy detected
+        raise Exception("No Policy")
 def execute_command(command):
     global policy  
     global path 

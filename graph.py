@@ -10,7 +10,8 @@ MAT = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 p = [(0, 4), (1, 4), (1, 3), (1, 2), (2, 2), (2, 1), (3, 1), (4, 1), (4, 2), (5, 2), (5, 3), (5, 4), (6, 4)]
 
-def showGrid(matrix, path):
+def showGrid(matrix, path):#creates the graph for showing  the grid where green squares are where the drone is allowed to go
+    #and red sqaures are where the drone cannot go 
     root = Tk()
     frm = ttk.Frame(root, padding=10)
     frm.grid()

@@ -16,16 +16,16 @@ class ABACMonitor:
         user_attributes = self.policy.aa_relation.get_attributes(user) #grabs all of the attributes inside user's AARelation 
         if user_attributes is not None:#If it's not empty then add user's attributes to attribute bag
             attribute_bag.extend(user_attributes)
-        object_attributes = self.policy.aa_relation.get_attributes(obj)#grabs all of the attributes inside user's AARelation 
-        if object_attributes is not None:
+        object_attributes = self.policy.aa_relation.get_attributes(obj)#grabs all of the attributes inside the Entity's AARelation 
+        if object_attributes is not None:#If it's not empty then add user's attributes to attribute bag
             attribute_bag.extend(object_attributes)
-        env_attributes = self.policy.aa_relation.get_attributes(environment)
-        if env_attributes is not None:
+        env_attributes = self.policy.aa_relation.get_attributes(environment)#grabs all of the attributes inside the Evnrionment's AARelation 
+        if env_attributes is not None:#If it's not empty then add user's attributes to attribute bag
             attribute_bag.extend(env_attributes)
-        return self.check_access_with_attribute_bag(attribute_bag, permission, row, col)
+        return self.check_access_with_attribute_bag(attribute_bag, permission, row, col)#sends attriubte bag to be compared against permission
 
     def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission, row, col) -> bool:
-
+        #will print everyt comparison to ensure that the proper attributes have been assigned
         '''for entry in self.policy.pa_relation.get_entries(permission, row, col):
             print("Grid" + str(row) + "x" + str(col) + "    " + str(permission) + "     ", end="")
             for x in entry:
@@ -34,10 +34,10 @@ class ABACMonitor:
             for entry in attribute_bag:
                 print(str(entry), end=" ")
             print()'''
-        for entry in self.policy.pa_relation.get_entries(permission, row, col):
-            if all(attr in attribute_bag for attr in entry):
+        for entry in self.policy.pa_relation.get_entries(permission, row, col): #for every entry associated with the permissions
+            if all(attr in attribute_bag for attr in entry): #if every attribute associated is in the PARelation is in the attributebbag return True
                 return True
-        return False
+        return False #Otherwise return False 
 
 
 if __name__ == "__main__":
