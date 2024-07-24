@@ -44,11 +44,10 @@ def build_grid(user_id, environment_id, rows, columns, policy):#creates the grid
                     if nonEntry:#if there are are attributes such that prevent the user from entering the property then add 0 to the grid in place   
                         new_row.append(0)
                         continue
-                
                 if(policy.get_pa_relation().get_entries(policy.get_permission('Entry'),object_id)!= None):#if there are attributes in PARelation
                     new_row.append(check_permission(user_id, object_id, environment_id, 'Entry', policy,row,col)) #append either 1 or 0 depending on whether or not you can endter the square
-                else:#otherwise raise an exception because something went catastrophically wrong
-                    raise Exception("Missing Permission, Entry, or PARelation")
+                else:#ootherwise the drone isn't allowed to enter the property
+                    new_row.append(0)
             grid.append(new_row)#append the row to the grid
     else:# no policy detected
         raise Exception("No Policy")

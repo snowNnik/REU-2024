@@ -10,7 +10,7 @@ MAT = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 p = [(0, 4), (1, 4), (1, 3), (1, 2), (2, 2), (2, 1), (3, 1), (4, 1), (4, 2), (5, 2), (5, 3), (5, 4), (6, 4)]
 
-def showGrid(matrix, path):#creates the graph for showing  the grid where green squares are where the drone is allowed to go
+def showGrid(matrix, path, policy=None):#creates the graph for showing  the grid where green squares are where the drone is allowed to go
     #and red sqaures are where the drone cannot go 
     root = Tk()
     frm = ttk.Frame(root, padding=10)
@@ -29,6 +29,21 @@ def showGrid(matrix, path):#creates the graph for showing  the grid where green 
             x0, y0 = c * cell_size, r * cell_size
             x1, y1 = x0 + cell_size, y0 + cell_size
             canvas.create_rectangle(x0, y0, x1, y1, fill=color, outline="black")
+            #Only used for demonstration purposes could be more efficient, but I don't know how
+            #Marks Origin of exclusion zones
+            if(policy is not None):
+                grid_Entity = policy.get_entity("Grid"+str(r)+"x"+str(c)) 
+                for instance in policy.get_aa_relation().get_attributes(grid_Entity):
+                    
+                    if(instance.get_declaration().get_name() == "exclusionZone"):
+                        origin_row = r
+                        origin_col =c
+                        origin_x = origin_col * cell_size + cell_size // 2
+                        origin_y = origin_row * cell_size + cell_size // 2
+                        canvas.create_oval(origin_x - 15, origin_y - 15, origin_x + 15, origin_y + 15, outline="black", width=2)
+                        canvas.create_text(origin_x, origin_y, text="E", fill="Black", font=("Helvetica", 16, "bold"))
+                
+
         
     # Convert the path to canvas coordinates and draw the line 
     path_coords = [(c * cell_size + cell_size // 2, r * cell_size + cell_size // 2) for (r, c) in path]
