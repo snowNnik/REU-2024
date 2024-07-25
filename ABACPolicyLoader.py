@@ -82,7 +82,6 @@ class ABACPolicyLoader:
         #to create attribute instances List which assign entities their attributes and PARelations the attributes required to access those permissions
         def mySort(e):#function used to ensure the userName attribute is first for accessing reasons
             return e.get_declaration().get_name() == "userName"
-        exclusionZoneExists= False #Represents whether or not their is and exclusionZone
         result = []
         exclusionZoneradi = [] #List which holds the radius of every exclusionZone
         exclusionZoneValues = [] #List which holds the values of every exclusionZone
@@ -96,22 +95,21 @@ class ABACPolicyLoader:
             value = parts[1].strip()#value1
             declaration = ABACPolicyLoader.get_declaration(name, declarations_list)#Gets the declaration that matches the declaration name
             result.append(AttributeInstance(declaration, value))#create AttributeInstance using the declaration and the value and add it to result
-            if(declaration.get_name() == "exclusionZone" and not(exclusionZoneExists)): #if the current object is exclusion
+            if(declaration.get_name() == "exclusionZone"): #if the current object is exclusionZone 
                 exclusionZone = value.split("!")#split into radius and value
                 exclusionZoneradi.append(int(exclusionZone[0].strip())) #radius of every exclusionZone
                 exclusionZoneValues.append(exclusionZone[1].strip()) #holds every value we will give to the attribute which will determine whether or not its allowed in
-                exclusionZoneExists= True # ExclusionZoneExists
+                permission_Attributes = pa_relation.get_dictionary() #Grabs the permission Attribute dictionary to begin adding attributes to entry permission
+                position = result[0].get_value().split("x") # grabs the location data of the current attributes
+                row = int(str(position[0])[4:]) #grabs the row
+                column = int(position[1]) #grabs column
+                for entry in range(0,len(exclusionZoneradi)): #for every Exclusion Zone found
+                    for x in range(-exclusionZoneradi[entry],exclusionZoneradi[entry]+1):#goes through each square in the radius to add the permissions
+                        for y in range(-exclusionZoneradi[entry],exclusionZoneradi[entry]+1): 
+                            ABACPolicyLoader.addPerm(exclusionZoneValues[entry], permission_Attributes,row+x,column+y)
         result.sort(key=mySort, reverse=True)#sorts the List so the "userName" Declaration is first which is where the name of the drone and the property is 
         # the property's name must be denoted by <userName, Grid<row>x<column> >
-        if(exclusionZoneExists==True): 
-            permission_Attributes = pa_relation.get_dictionary() #Grabs the permission Attribute dictionary to begin adding attributes to entry permission
-            position = result[0].get_value().split("x") # grabs the location data of the current attributes
-            row = int(str(position[0])[4:]) #grabs the row
-            column = int(position[1]) #grabs column
-            for entry in range(0,len(exclusionZoneradi)): #for every Exclusion Zone found
-                for x in range(-exclusionZoneradi[entry],exclusionZoneradi[entry]+1):#goes through each square in the radius to add the permissions
-                    for y in range(-exclusionZoneradi[entry],exclusionZoneradi[entry]+1): 
-                        ABACPolicyLoader.addPerm(exclusionZoneValues[entry], permission_Attributes,row+x,column+y)
+            
         return result
        
 
