@@ -1,6 +1,0 @@
-ATTRS = <String, zoneName>; <String, noise_level>; <String, speed>; <boolean, governmentOwned>
-PERMS = <Entry>
-PA = <zoneName, Grid0x0>; <noise_level, quiet> : Entry - <zoneName, Grid0x1>; <speed, fast> : Entry - <zoneName, Grid1x0>; <speed, fast>; <noise_level, quiet> : Entry - <zoneName, Grid1x1>; <governmentOwned, true> : Entry
-ENTITIES = <Drone>;<ENV>;<Grid0x0>;<Grid0x1>;<Grid1x0>;<Grid1x1>
-AA = <noise_level, quiet>; <speed, fast>; <governmentOwned, false> : <Drone> - <zoneName, Grid0x0> : <Grid0x0> - <zoneName, Grid0x1> : <Grid0x1> - <zoneName, Grid1x0> : <Grid1x0> - <zoneName, Grid1x1> : <Grid1x1> 
-

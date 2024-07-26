@@ -1,5 +1,0 @@
-ATTRS = <String, zoneName>; <String, noise_level>; <String, speed>; <boolean, governmentOwned>; <String, ownerName>
-PERMS = <Entry>
-PA = <zoneName, Grid0x0>; <noise_level, quiet> : Entry - <zoneName, Grid0x1>; <speed, fast> : Entry - <zoneName, Grid0x2>; <ownerName, Amazon> : Entry - <zoneName, Grid1x0>; <speed, fast>; <noise_level, quiet> : Entry - <zoneName, Grid1x1>; <governmentOwned, true> : Entry - <zoneName, Grid1x2>; <noise_level, quiet>; <ownerName, Amazon> : Entry - <zoneName, Grid2x0>; <speed, fast>; <ownerName, Amazon> : Entry - <zoneName, Grid2x1>; <ownerName, Amazon> : Entry - <zoneName, Grid2x2>; <ownerName, Amazon> : Entry 
-ENTITIES = <Drone>;<ENV>;<Grid0x0>;<Grid0x1>;<Grid0x2>;<Grid1x0>;<Grid1x1>;<Grid1x2>;<Grid2x0>;<Grid2x1>;<Grid2x2>
-AA = <noise_level, quiet>; <speed, fast>; <governmentOwned, false>; <ownerName, Amazon> : <Drone> - <zoneName, Grid0x0> : <Grid0x0> - <zoneName, Grid0x1> : <Grid0x1> - <zoneName, Grid0x2> : <Grid0x2> - <zoneName, Grid1x0> : <Grid1x0> - <zoneName, Grid1x1> : <Grid1x1> - <zoneName, Grid1x2> : <Grid1x2> - <zoneName, Grid2x0> : <Grid2x0> - <zoneName, Grid2x1> : <Grid2x1> - <zoneName, Grid2x2> : <Grid2x2>
