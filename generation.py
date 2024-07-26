@@ -1,8 +1,3 @@
-# ATTRS = <String, userName>; <String, noise_level>; <String, speed>; <boolean, governmentOwned>
-# PERMS = <Entry>
-# PA = <userName, Grid0x0>; <noise_level, quiet> : Entry - <userName, Grid0x1>; <speed, fast> : Entry - <userName, Grid1x0>; <speed, fast>; <noise_level, quiet> : Entry - <userName, Grid1x1>; <governmentOwned, true> : Entry
-# ENTITIES = <Drone>;<Grid0x0>;<Grid0x1>;<Grid1x0>;<Grid1x1>;<ENV>
-# AA = <noise_level, quiet>; <speed, fast>; <governmentOwned, false> : <Drone> - <userName, Grid0x0> : <Grid0x0> - <userName, Grid0x1> : <Grid0x1> - <userName, Grid1x0> : <Grid1x0> - <userName, Grid1x1> : <Grid1x1> 
 import random
 
 # 14 possible generic attributes. Only ~5 attributes are used in one file, taken by random sample

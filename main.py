@@ -59,7 +59,7 @@ def execute_command(command):
         return
     match command_parts[0]:#First arguement dictates what method to execute
         case "load-policy": #loads the Attributes, Permissions, Entities and assigns Attributes to Permissions and Entities as defined in the file 
-            # load-policy inputfile.txt
+            # load-policy policy_file.txt
             policy = ABACPolicyLoader.load_abac_policy(command_parts[1]) #the first arguement should be the name of the file setup similar to the Example1.txt file
         case "build-grid":
             # build-grid Drone_id ENV <row#,col#>  
