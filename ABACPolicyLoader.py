@@ -106,7 +106,6 @@ class ABACPolicyLoader:
         if(exclusionZoneExists):
             permission_Attributes = pa_relation.get_dictionary() #Grabs the permission Attribute dictionary to begin adding attributes to entry permission
             position = result[0].get_value().split("x") # grabs the location data of the current attributes
-            print(position)
             row = int(str(position[0])[4:]) #grabs the row
             column = int(position[1]) #grabs column
             for entry in range(0,len(exclusionZoneradi)): #for every Exclusion Zone found
