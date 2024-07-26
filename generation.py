@@ -20,23 +20,26 @@ def generateGridNames(row, col):
     return names
                       
 def generateAttributes(list_attributes):
-    line = "ATTRS  = <String, userName>;"
+    line = "ATTRS  = <String, userName>; <String, exclusionZone>; <String, ownedBy>;"
     for attr in list_attributes:
         line += "<String, " + str(attr) + ">;"
     return line[:-1] 
 
 def generatePermissions():
-    return "PERMS = <Entry>"
+    return "PERMS = <Entry>; <nonEntry>"
 
 def generatePAs(row, col, attrs):
     pA = "PA = "
     names = generateGridNames(row, col)
     for name in names:
+        leave = random.randint(0, 10)
         curr_attrs = random.sample(attrs, k=1)
         pA += "<userName, " + str(name[1:-1]) + ">;"
-        # for attr in curr_attrs:
-        #     random_num = random.randint(0, 1)
-        #     pA += "<" + str(attr) + ", " + str(random_num) + ">;"
+        for attr in curr_attrs:
+            if leave < 7:
+                continue
+            random_num = random.randint(0, 1)
+            pA += "<" + str(attr) + ", " + str(random_num) + ">;"
         pA = pA[:-1] + " : Entry - "
     pA = pA[:-2]
     return pA
@@ -61,8 +64,8 @@ def generateEntities(row, col):
     return line + "<ENV>"
 
 attrs = random.sample(possible_attrs, k=5)
-row = 7
-col = 10
+row = 15
+col = 30
 
 f = open("outfile.txt", "w")
 f.write(generateAttributes(attrs) + "\n")

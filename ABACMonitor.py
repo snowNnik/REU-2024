@@ -7,35 +7,39 @@ from AARelation import *
 from ABACPolicy import *
 
 class ABACMonitor:
-    def __init__(self, policy: ABACPolicy):
+    def __init__(self, policy: ABACPolicy):#creates the policy variables so they can be accessed later to gather up the required attributes for comparisons
         self.policy = policy
 
-    def check_access(self, user: Entity, obj: Entity, environment: Entity, permission: Permission) -> bool:
-        attribute_bag = []
-        user_attributes = self.policy.aa_relation.get_attributes(user)
-        if user_attributes is not None:
+    def check_access(self, user: Entity, obj: Entity, environment: Entity, permission: Permission,row,col) -> bool:#retrieves the user's attributes, the object's attributes, and the
+        #environment's attributes before sending them to check_access_with_attribute_bag for comparaisonts 
+        attribute_bag = []#the list that will hold all of the attributes that will be compared against permission's attributes
+        user_attributes = self.policy.aa_relation.get_attributes(user) #grabs all of the attributes inside user's AARelation 
+        if user_attributes is not None:#If it's not empty then add user's attributes to attribute bag
             attribute_bag.extend(user_attributes)
-        object_attributes = self.policy.aa_relation.get_attributes(obj)
-        if object_attributes is not None:
+        object_attributes = self.policy.aa_relation.get_attributes(obj)#grabs all of the attributes inside the Entity's AARelation 
+        if object_attributes is not None:#If it's not empty then add user's attributes to attribute bag
             attribute_bag.extend(object_attributes)
-        env_attributes = self.policy.aa_relation.get_attributes(environment)
-        if env_attributes is not None:
+        env_attributes = self.policy.aa_relation.get_attributes(environment)#grabs all of the attributes inside the Evnrionment's AARelation 
+        if env_attributes is not None:#If it's not empty then add user's attributes to attribute bag
             attribute_bag.extend(env_attributes)
-        return self.check_access_with_attribute_bag(attribute_bag, permission)
+        return self.check_access_with_attribute_bag(attribute_bag, permission, row, col)#sends attriubte bag to be compared against permission
 
-    def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission) -> bool:
-        '''print("Current Attributes")
-        for x in attribute_bag:
-            if x.get_declaration is not None:
-                print("     " + str(x))'''
-        for entry in self.policy.pa_relation.get_entries(permission):
-            '''print("Attribute Check")
-            print("     " + str(entry))'''
-            if all(attr in attribute_bag for attr in entry.attributes):
+    def check_access_with_attribute_bag(self, attribute_bag: List[AttributeInstance], permission: Permission, row, col) -> bool:
+        #will print everyt comparison to ensure that the proper attributes have been assigned
+        '''for entry in self.policy.pa_relation.get_entries(permission, row, col):
+            print("Grid" + str(row) + "x" + str(col) + "    " + str(permission) + "     ", end="")
+            for x in entry:
+                print(str(x), end=" ")
+            print(" vs ", end=" ")
+            for entry in attribute_bag:
+                print(str(entry), end=" ")
+            print()'''
+        for entry in self.policy.pa_relation.get_entries(permission, row, col): #for every entry associated with the permissions
+            if all(attr in attribute_bag for attr in entry): #if every attribute associated is in the PARelation is in the attributebbag return True
                 return True
-        return False
+        return False #Otherwise return False 
 
-
+    #unused
 if __name__ == "__main__":
     write_permission = Permission("writePermission")
     read_permission = Permission("readPermission")

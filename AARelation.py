@@ -34,31 +34,33 @@ class AttributeInstance:
 class AARelation:
     class AARelationEntry:
         def __init__(self, entity, attributes):
+            #Entity object
             self.entity = entity
+            #List of Attribute Objects connected to the entity to be used for accessing purposes
             self.attributes = attributes
 
         def __str__(self):
             return f"{self.entity}: {', '.join(str(attr) for attr in self.attributes)};"
 
-    def __init__(self):
+    def __init__(self):#creates an empty dictionary
         self.relation_table = {}
 
-    def add_relation_entry(self, entity, attributes):
+    def add_relation_entry(self, entity, attributes):#adds attributes to the relation table  
   
-        if entity.name in self.relation_table:
+        if entity.name in self.relation_table:#if the entity is already in an AARelationEntry in the table, add the attributes to that entry in the table 
             self.relation_table[entity.name].attributes.extend(attributes)
-        else:
-            self.relation_table[entity.name] = self.AARelationEntry(
-                entity, attributes)
-
+        else: #other wise create the entry with entity.name as the key and create the AAReltaionEntry with the entity object and the List of AttributesInstances objects 
+            self.relation_table[entity.name] = self.AARelationEntry(entity, attributes)
+    
+    #Unused
     def get_attributes(self, entity):
         entry = self.relation_table.get(entity.name)
         return entry.attributes if entry else None
-
+    #unused
     def are_related(self, entity, attribute):
         entry = self.relation_table.get(entity.name)
         return attribute in entry.attributes if entry else False
-
+    
     def __str__(self):
         return "\n".join(str(entry) for entry in self.relation_table.values())
 

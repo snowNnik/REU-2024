@@ -1,1 +1,0 @@
-load-policy test.txt; check-permission Drone1 Grid1 ENV PE

@@ -9,7 +9,9 @@ class Permission:
     #     def __init__(self, name: str, related_attributes: List['AttributeInstance'] = None):
 
     def __init__(self, name: str, related_attributes=None):
+        #usually just used for the name variable which is used for comparisions
         self.name = name
+        #not really used
         self.related_attributes = related_attributes if related_attributes is not None else []
 
     def get_name(self) -> str:
