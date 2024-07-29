@@ -15,7 +15,7 @@ def generateGridNames(row, col):
     return names
                       
 def generateAttributes(list_attributes):
-    line = "ATTRS  = <String, userName>; <String, exclusionZone>; <String, ownedBy>;"
+    line = "ATTRS  = <String, userName>; <String, exclusionZone>; <String, droneOwnedBy>;"
     for attr in list_attributes:
         line += "<String, " + str(attr) + ">;"
     return line[:-1] 

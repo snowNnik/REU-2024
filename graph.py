@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-
+import time
 MAT = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
        [1, 1, 1, 0, 0, 0, 0, 1, 1, 1], 
@@ -80,6 +80,7 @@ def showGrid(matrix, path, policy=None):#creates the graph for showing  the grid
             root.after(500, move_drone, index + 1)  # Move to next point after 500 ms
 
     # Start the drone animation
+    
     move_drone()
 
     root.mainloop()

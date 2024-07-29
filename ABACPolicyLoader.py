@@ -75,7 +75,7 @@ class ABACPolicyLoader:
                             permission_Attributes[gridName][permission].append(AttributeInstance(AttributeDeclaration("userName","String"),str("Grid"+str(a)+"x"+str(b)))) 
                     else:#else they can only enter if they are owned by the value set by ExclusionZone
                         permission = ABACPolicyLoader.get_permission("Entry", permissions) #Grabs the Entry permission object for accessing purposes
-                        ABACPolicyLoader.addToAttributeList(permission_Attributes, gridName, permission, "ownedBy", "String", exclusionValue) #adds ownedBy to every entry permission meaning only 
+                        ABACPolicyLoader.addToAttributeList(permission_Attributes, gridName, permission, "droneOwnedBy", "String", exclusionValue) #adds droneOwnedBy to every entry permission meaning only 
                         #those with the attribute may enter
     @staticmethod
     def read_attribute_instances(attributes_line: str, declarations_list: List[AttributeDeclaration]) -> List[AttributeInstance]: #read attributes from the file 
