@@ -1,0 +1,5 @@
+ATTRS  = <String, userName>;<String,exclusionZone>;<String,droneOwnedBy>
+PERMS = <Entry>; <nonEntry>
+PA = <userName, Grid0x0> : Entry - <userName, Grid0x2> : Entry - <userName, Grid1x0> : Entry - <userName, Grid1x1> : Entry - <userName, Grid1x2> : Entry
+ENTITIES = <Drone>;<Grid0x0>;<Grid0x1>;<Grid0x2>;<Grid1x0>;<Grid1x1>;<Grid1x2>;<ENV>
+AA =  <userName, Grid0x0> : <Grid0x0> - <userName, Grid0x1> : <Grid0x1> - <userName, Grid0x2> : <Grid0x2> - <userName, Grid1x0> : <Grid1x0> - <userName, Grid1x1> : <Grid1x1> - <userName, Grid1x2> : <Grid1x2> 

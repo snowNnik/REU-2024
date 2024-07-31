@@ -1,0 +1,1 @@
+load-policy 3x2_Example.txt; build-grid Drone ENV <2,3>; make-path <0,0> <0,2>
