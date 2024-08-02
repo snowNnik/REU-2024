@@ -60,18 +60,40 @@ def execute_command(command):
     match command_parts[0]:#First arguement dictates what method to execute
         case "load-policy": #loads the Attributes, Permissions, Entities and assigns Attributes to Permissions and Entities as defined in the file 
             # load-policy policy_file.txt
-            policy = ABACPolicyLoader.load_abac_policy(command_parts[1]) #the first arguement should be the name of the file setup similar to the Example1.txt file
+            if(len(command_parts) >=2 ):
+                policy = ABACPolicyLoader.load_abac_policy(command_parts[1]) #the first arguement should be the name of the file setup similar to the Example1.txt file
+            else:
+                raise IndexError("load-policy command does not have enough inputs")
         case "build-grid":
             # build-grid Drone_id ENV <row#,col#>  
-            rowsAndColums = command_parts[3].strip()[1:-1].split(",") #grabs the number of rows and columns and separates them into into the row and column numbers to be used to build the gird
-            build_grid(command_parts[1], command_parts[2],rowsAndColums[0],rowsAndColums[1], policy)
+            if(len(command_parts) >= 4):
+              if(command_parts[3][0].strip() =="<" and command_parts[3][len(command_parts[3])-1].strip() ==">" and command_parts[3].__contains__(",")):
+                  rowsAndColums = command_parts[3].strip()[1:-1].split(",") #grabs the number of rows and columns and separates them into into the row and column numbers to be used to build the gird
+                  build_grid(command_parts[1], command_parts[2],rowsAndColums[0],rowsAndColums[1], policy)
+              else:
+                raise SyntaxError("The build grid command should have the syntax: \"build-grid User_Entity_name Environment_Entity_name <int,int>\" where User_Entity_name is probably the Drone and Environment_ENtity_name represents the drone")
+            else:
+                raise IndexError("build-grid command does not have enough inputs")
         case "make-path":
             # make-path <from_row#, from_col#> <to_row#, to_col#>
-            startPos = command_parts[1].strip()[1:-1].split(",")
-            startPos = [eval(x) for x in startPos]
-            destPos = command_parts[2].strip()[1:-1].split(",")
-            destPos = [eval(x) for x in destPos]
-            path = a_star_search(grid, startPos, destPos)
+            if(len(command_parts) >= 3):
+                if(command_parts[1][0].strip() =="<" and command_parts[1][len(command_parts[1])-1].strip() ==">" and command_parts[1].__contains__(",")):#checks for correct syntax
+                    startPos = command_parts[1].strip()[1:-1].split(",")
+                    startPos = [eval(x) for x in startPos]
+                else:
+                    raise SyntaxError("The make-pathcommand should have the syntax: \"make-path <int,int> <int,int>\" and the first coordinate's sytax is wrong")
+                if(command_parts[2][0].strip() =="<" and command_parts[2][len(command_parts[2])-1].strip() ==">" and command_parts[2].__contains__(",")):
+                    destPos = command_parts[2].strip()[1:-1].split(",")
+                    destPos = [eval(x) for x in destPos]
+                else:
+                    raise SyntaxError("The make-path command should have the syntax: \"make-path <int,int> <int,int>\" and the second coordinate's sytax is wrong")
+                try:
+                    path = a_star_search(grid, startPos, destPos)
+                except NameError:
+                    raise NameError("Either Grid the was not created properly or there was an error in start or end desitnations in make-path")
+            else:
+                raise IndexError("make-path command does not have enough inputs")
+
         case "show-policy": # UNUSED
             print(policy)
         case "check-permission": # UNUSED
@@ -116,5 +138,8 @@ if __name__ == "__main__":
     print(' ') # Space
     for line in grid: #prints each line in the girds 1s represent areas the drone can enter, 0s represent spaces the drone cannot enter 
         print(line) 
-    showGrid(grid, path) #draws a grid and path of the drone in a 2D grid in a tk drawing where the green spaces represent places the drone is allowed to enter, 
-    # red spaces represent where the drone is not allowed to enter and a blue represents the drone's path 
+    try:
+        showGrid(grid, path) #draws a grid and path of the drone in a 2D grid in a tk drawing where the green spaces represent places the drone is allowed to enter, 
+        # red spaces represent where the drone is not allowed to enter and a blue represents the drone's path 
+    except NameError:
+        raise NameError("either build-grid or make-path was not called correctly")
