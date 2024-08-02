@@ -81,16 +81,16 @@ def execute_command(command):
                     startPos = command_parts[1].strip()[1:-1].split(",")
                     startPos = [eval(x) for x in startPos]
                 else:
-                    raise SyntaxError("The make-pathcommand should have the syntax: \"make-path <int,int> <int,int>\" and the first coordinate's sytax is wrong")
+                    print("SyntaxError: The make-pathcommand should have the syntax: \"make-path <int,int> <int,int>\" and the first coordinate's sytax is wrong")
                 if(command_parts[2][0].strip() =="<" and command_parts[2][len(command_parts[2])-1].strip() ==">" and command_parts[2].__contains__(",")):
                     destPos = command_parts[2].strip()[1:-1].split(",")
                     destPos = [eval(x) for x in destPos]
                 else:
-                    raise SyntaxError("The make-path command should have the syntax: \"make-path <int,int> <int,int>\" and the second coordinate's sytax is wrong")
+                    print("SyntaxError: The make-path command should have the syntax: \"make-path <int,int> <int,int>\" and the second coordinate's sytax is wrong")
                 try:
                     path = a_star_search(grid, startPos, destPos)
                 except NameError:
-                    raise NameError("Either Grid the was not created properly or there was an error in start or end desitnations in make-path")
+                    print("main.py line 91 NameError: Either Grid the was not created properly or there was an error in start or end desitnations in make-path")
             else:
                 raise IndexError("make-path command does not have enough inputs")
 
@@ -130,16 +130,18 @@ if __name__ == "__main__":
     command_line = " ".join(sys.argv)#Grab the command line input
     command_line = command_line[8:]# skip the main.py part of the command line command 
     command_line = "../REU-2024/inputs/" + str(command_line) #redrect to the folders
-    commandFile = open(command_line, "r") # opens the file which was referenced by command line
-    commands = commandFile.read().split(";") #reads the line of the file and splits it into commands (seen in the execute_command Menu) spaced out between ; See Example1_Input.txt as an example
-    policy = None # holds policy for later use
-    for command in commands: #for every command strip out the spaces and run execute command
-        execute_command(command.strip())
-    print(' ') # Space
-    for line in grid: #prints each line in the girds 1s represent areas the drone can enter, 0s represent spaces the drone cannot enter 
-        print(line) 
     try:
+        commandFile = open(command_line, "r") # opens the file which was referenced by command line
+        commands = commandFile.read().split(";") #reads the line of the file and splits it into commands (seen in the execute_command Menu) spaced out between ; See Example1_Input.txt as an example
+        policy = None # holds policy for later use
+        for command in commands: #for every command strip out the spaces and run execute command
+            execute_command(command.strip())
+        print(' ') # Space
+        for line in grid: #prints each line in the girds 1s represent areas the drone can enter, 0s represent spaces the drone cannot enter 
+            print(line) 
         showGrid(grid, path) #draws a grid and path of the drone in a 2D grid in a tk drawing where the green spaces represent places the drone is allowed to enter, 
         # red spaces represent where the drone is not allowed to enter and a blue represents the drone's path 
+    except FileNotFoundError:
+        print("main.py line 133-143 FileNotFoundError: Flie not Found")
     except NameError:
-        raise NameError("either build-grid or make-path was not called correctly")
+        print("main.py line 133-143 NameError: either build-grid or make-path was not called correctly")
