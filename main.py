@@ -8,7 +8,7 @@ from ABACPolicy import *
 from Permission import *
 from pathing import *
 from graph import *
-
+import os
 def check_permission(user_id, object_id, environment_id, permission_id, policy, row, col):#checks whether or user-id has access to do permission on the object_id
     if policy is not None:#if policy exsists 
         user = policy.get_entity(user_id) #the user entity is retrieved
@@ -129,7 +129,7 @@ def execute_command(command):
 if __name__ == "__main__":
     command_line = " ".join(sys.argv)#Grab the command line input
     command_line = command_line[8:]# skip the main.py part of the command line command 
-    command_line = "../REU-2024/inputs/" + str(command_line) #redrect to the folders
+    command_line = os.getcwd() + "/inputs/" + str(command_line) #redrect to the folders
     try:
         commandFile = open(command_line, "r") # opens the file which was referenced by command line
         commands = commandFile.read().split(";") #reads the line of the file and splits it into commands (seen in the execute_command Menu) spaced out between ; See Example1_Input.txt as an example
