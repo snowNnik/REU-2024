@@ -189,7 +189,7 @@ class ABACPolicyLoader:
         try:
            file = open(os.path.join(os.path.abspath("").strip() ,filename), "r") #opens file to read from
         except FileNotFoundError:
-            print("ABACYPolicyLoader.py line 190 FileNotFoundError: name wrong in input file or doesn't exitst")
+            print("ABACYPolicyLoader.py line 190 FileNotFoundError: name wrong in input file or doesn't exist")
             exit()
         for line in file: #For every line in file split it into a list based on =  
             parts = line.split("=")
