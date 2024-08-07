@@ -7,7 +7,7 @@ from PARelation import *
 from AARelation import *
 from ABACPolicy import *
 from ABACMonitor import *
-
+import os
 
 class ABACPolicyLoader:
     @staticmethod
@@ -184,19 +184,24 @@ class ABACPolicyLoader:
         #which uses the permission objects as keys, contained within the second dictionary is a list of attributes that serve as the requirements to the associated 
         #permission
         aa_relation = None #holds all the attributes related to a certain object
-        filename = "../REU-2024/inputs/" + str(filename) #adds the path to the inputs folder to the file name  
-        with open(filename, "r") as file: #opens file to read from
-            for line in file: #For every line in file split it into a list based on =  
-                parts = line.split("=")
-                match parts[0].strip():#if the first element of the list matches the options on the menu then the following code is executed 
-                    case  "ATTRS":#Loads attrubte declarations (datatypes and names)
-                        attribute_declarations = ABACPolicyLoader.read_attribute_declarations(parts[1]) 
-                    case "PERMS":#Loads Permissions (permission_Names)
-                        permissions = ABACPolicyLoader.read_permissions(parts[1])
-                    case "ENTITIES":# Loads entities 
-                        entities = ABACPolicyLoader.read_entities(parts[1])
-                    case "PA":#Gives Permissions the attributes to perform the action associated with them, MUST COME BEFORE AA IF MAKING AN EXCLUSIONZONE
-                        pa_relation = ABACPolicyLoader.read_pa( parts[1], permissions, attribute_declarations, attribute_instances)
-                    case "AA":#gives Entities the attributes they are assigned by the user
-                        aa_relation = ABACPolicyLoader.read_aa(parts[1], entities, attribute_declarations, attribute_instances,ABACPolicyLoader.get_permission("Entry", permissions))
+        filename = "inputs/" + str(filename) #adds the path to the inputs folder to the file name  
+        file = None
+        try:
+           file = open(os.path.join(os.path.abspath("").strip() ,filename), "r") #opens file to read from
+        except FileNotFoundError:
+            print("ABACYPolicyLoader.py line 190 FileNotFoundError: name wrong in input file or doesn't exitst")
+            exit()
+        for line in file: #For every line in file split it into a list based on =  
+            parts = line.split("=")
+            match parts[0].strip():#if the first element of the list matches the options on the menu then the following code is executed 
+                case  "ATTRS":#Loads attrubte declarations (datatypes and names)
+                    attribute_declarations = ABACPolicyLoader.read_attribute_declarations(parts[1]) 
+                case "PERMS":#Loads Permissions (permission_Names)
+                    permissions = ABACPolicyLoader.read_permissions(parts[1])
+                case "ENTITIES":# Loads entities 
+                    entities = ABACPolicyLoader.read_entities(parts[1])
+                case "PA":#Gives Permissions the attributes to perform the action associated with them, MUST COME BEFORE AA IF MAKING AN EXCLUSIONZONE
+                    pa_relation = ABACPolicyLoader.read_pa( parts[1], permissions, attribute_declarations, attribute_instances)
+                case "AA":#gives Entities the attributes they are assigned by the user
+                    aa_relation = ABACPolicyLoader.read_aa(parts[1], entities, attribute_declarations, attribute_instances,ABACPolicyLoader.get_permission("Entry", permissions))
         return ABACPolicy(entities, permissions, attribute_declarations, attribute_instances, pa_relation, aa_relation) #returns a completed policy object      

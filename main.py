@@ -127,21 +127,22 @@ def execute_command(command):
 
 
 if __name__ == "__main__":
+    sys.path.append(sys.path.append(os.getcwd()))
     command_line = " ".join(sys.argv)#Grab the command line input
     command_line = command_line[8:]# skip the main.py part of the command line command 
     command_line = os.getcwd() + "/inputs/" + str(command_line) #redrect to the folders
+    commandFile = None
     try:
         commandFile = open(command_line, "r") # opens the file which was referenced by command line
         commands = commandFile.read().split(";") #reads the line of the file and splits it into commands (seen in the execute_command Menu) spaced out between ; See Example1_Input.txt as an example
-        policy = None # holds policy for later use
-        for command in commands: #for every command strip out the spaces and run execute command
-            execute_command(command.strip())
-        print(' ') # Space
-        for line in grid: #prints each line in the girds 1s represent areas the drone can enter, 0s represent spaces the drone cannot enter 
-            print(line) 
-        showGrid(grid, path) #draws a grid and path of the drone in a 2D grid in a tk drawing where the green spaces represent places the drone is allowed to enter, 
-        # red spaces represent where the drone is not allowed to enter and a blue represents the drone's path 
     except FileNotFoundError:
-        print("main.py line 133-143 FileNotFoundError: Flie not Found")
-    except NameError:
-        print("main.py line 133-143 NameError: either build-grid or make-path was not called correctly")
+        print("main.py line 136-137 FileNotFoundError: name wrong in command line or doesn't exitst")
+        exit()
+    policy = None # holds policy for later use
+    for command in commands: #for every command strip out the spaces and run execute command
+        execute_command(command.strip())
+    print(' ') # Space
+    for line in grid: #prints each line in the girds 1s represent areas the drone can enter, 0s represent spaces the drone cannot enter 
+        print(line) 
+    showGrid(grid, path) #draws a grid and path of the drone in a 2D grid in a tk drawing where the green spaces represent places the drone is allowed to enter, 
+    # red spaces represent where the drone is not allowed to enter and a blue represents the drone's path     
